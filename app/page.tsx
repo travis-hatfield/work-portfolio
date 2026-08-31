@@ -1,14 +1,39 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { profile } from "@/lib/data";
+import { siteFromHost } from "@/lib/sites";
 
-const links = [
+const professionalLinks = [
   { href: "/resume", label: "Resume", desc: "Roles, dates, and a downloadable PDF." },
   { href: "/ai-assisted-projects", label: "AI-Assisted Projects", desc: "Case studies: problem, approach, outcome." },
   { href: "/personal-ai-projects", label: "Personal AI Projects", desc: "Independent builds and experiments." },
   { href: "/resources", label: "Resources", desc: "Templates and files worth sharing." },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const headerList = await headers();
+  const site = siteFromHost(headerList.get("host"));
+
+  if (site === "personal") {
+    return (
+      <div className="flex flex-col gap-12">
+        <section>
+          <h1 className="text-3xl font-semibold tracking-tight">{profile.name}</h1>
+          <p className="mt-2 text-lg text-muted">Personal blog and projects.</p>
+          <p className="mt-6 max-w-2xl leading-relaxed text-foreground/90">{profile.blurb}</p>
+        </section>
+        <section>
+          <Link
+            href="/blog"
+            className="inline-block rounded-lg border border-border bg-card px-5 py-2.5 font-medium hover:border-accent transition-colors"
+          >
+            Read the blog →
+          </Link>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-12">
       <section>
@@ -26,7 +51,7 @@ export default function Home() {
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2">
-        {links.map((l) => (
+        {professionalLinks.map((l) => (
           <Link
             key={l.href}
             href={l.href}
