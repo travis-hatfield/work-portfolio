@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Post } from "@/lib/db";
+import RichTextEditor from "@/components/rich-text-editor";
 
 type Props = {
   post?: Pick<
@@ -25,6 +26,21 @@ export default function PostEditor({ post }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   const isEditing = Boolean(post?.id);
+  const [slugTouched, setSlugTouched] = useState(isEditing);
+
+  function slugify(value: string) {
+    return value
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
+  }
+
+  function handleTitleChange(value: string) {
+    setTitle(value);
+    if (!slugTouched) setSlug(slugify(value));
+  }
 
   async function handleUpload(file: File) {
     setUploading(true);
@@ -46,6 +62,10 @@ export default function PostEditor({ post }: Props) {
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
+    if (!content || content === "<p></p>") {
+      setError("Content can't be empty.");
+      return;
+    }
     setSaving(true);
     setError(null);
     try {
@@ -77,7 +97,7 @@ export default function PostEditor({ post }: Props) {
   }
 
   return (
-    <form onSubmit={handleSave} className="flex flex-col gap-5 max-w-2xl">
+    <form onSubmit={handleSave} className="flex flex-col gap-5 max-w-4xl">
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       <div>
@@ -96,21 +116,29 @@ export default function PostEditor({ post }: Props) {
         <label className="block text-sm font-medium mb-1">Title</label>
         <input
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => handleTitleChange(e.target.value)}
           required
           className="w-full rounded-lg border border-border bg-card px-3 py-2"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Slug</label>
+        <label className="block text-sm font-medium mb-1">
+          Slug <span className="font-normal text-muted">(the web address for this post)</span>
+        </label>
         <input
           value={slug}
-          onChange={(e) => setSlug(e.target.value)}
+          onChange={(e) => {
+            setSlugTouched(true);
+            setSlug(e.target.value);
+          }}
           required
           placeholder="my-post-title"
-          className="w-full rounded-lg border border-border bg-card px-3 py-2"
+          className="w-full rounded-lg border border-border bg-card px-3 py-2 font-mono text-sm"
         />
+        <p className="mt-1 text-xs text-muted">
+          Your post will live at .../blog/{slug || "your-slug-here"}
+        </p>
       </div>
 
       <div>
@@ -138,14 +166,9 @@ export default function PostEditor({ post }: Props) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Content (Markdown)</label>
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          rows={16}
-          required
-          className="w-full rounded-lg border border-border bg-card px-3 py-2 font-mono text-sm"
-        />
+        <label className="block text-sm font-medium mb-1">Content</label>
+        <RichTextEditor content={content} onChange={setContent} />
+        {!content && <p className="mt-1 text-xs text-red-500">Content can&apos;t be empty.</p>}
       </div>
 
       <label className="flex items-center gap-2 text-sm">

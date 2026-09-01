@@ -28,9 +28,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         // eslint-disable-next-line @next/next/no-img-element
         <img src={post.cover_image_url} alt="" className="rounded-lg w-full object-cover" />
       )}
-      <div className="prose prose-neutral dark:prose-invert whitespace-pre-wrap leading-relaxed">
-        {post.content}
-      </div>
+      <div
+        className="prose prose-neutral dark:prose-invert leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
     </article>
   );
 }
