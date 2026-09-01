@@ -5,11 +5,22 @@ import { useState } from "react";
 import type { Post, Block } from "@/lib/db";
 import RichTextEditor from "@/components/rich-text-editor";
 import BlockEditor from "@/components/block-editor";
+import CanvasEditor from "@/components/canvas-editor";
+import { createEmptyCanvas, normalizeCanvas, type CanvasDoc } from "@/lib/canvas";
 
 type Props = {
   post?: Pick<
     Post,
-    "id" | "title" | "slug" | "site" | "excerpt" | "content" | "content_blocks" | "cover_image_url" | "published"
+    | "id"
+    | "title"
+    | "slug"
+    | "site"
+    | "excerpt"
+    | "content"
+    | "content_blocks"
+    | "content_canvas"
+    | "cover_image_url"
+    | "published"
   >;
 };
 
@@ -21,8 +32,15 @@ export default function PostEditor({ post }: Props) {
   const [excerpt, setExcerpt] = useState(post?.excerpt ?? "");
   const [content, setContent] = useState(post?.content ?? "");
   const [blocks, setBlocks] = useState<Block[]>(post?.content_blocks ?? []);
-  // Existing posts saved before the block editor keep editing as classic HTML.
-  const [useBlocks, setUseBlocks] = useState(!post || Boolean(post?.content_blocks));
+  const existingCanvas = normalizeCanvas(post?.content_canvas);
+  const [canvasDoc, setCanvasDoc] = useState<CanvasDoc>(existingCanvas ?? createEmptyCanvas());
+  type ContentMode = "classic" | "blocks" | "canvas";
+  const [contentMode, setContentMode] = useState<ContentMode>(() => {
+    if (existingCanvas?.elements.length) return "canvas";
+    if (post?.content_blocks?.length) return "blocks";
+    if (!post) return "blocks";
+    return "classic";
+  });
   const [coverImageUrl, setCoverImageUrl] = useState(post?.cover_image_url ?? "");
   const [published, setPublished] = useState(post?.published ?? false);
   const [saving, setSaving] = useState(false);
@@ -66,13 +84,16 @@ export default function PostEditor({ post }: Props) {
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    if (useBlocks) {
-      if (blocks.length === 0) {
-        setError("Add at least one block.");
-        return;
-      }
-    } else if (!content || content === "<p></p>") {
+    if (contentMode === "blocks" && blocks.length === 0) {
+      setError("Add at least one block.");
+      return;
+    }
+    if (contentMode === "classic" && (!content || content === "<p></p>")) {
       setError("Content can't be empty.");
+      return;
+    }
+    if (contentMode === "canvas" && canvasDoc.elements.length === 0) {
+      setError("Add at least one element to the canvas.");
       return;
     }
     setSaving(true);
@@ -83,8 +104,9 @@ export default function PostEditor({ post }: Props) {
         slug,
         site,
         excerpt,
-        content: useBlocks ? "" : content,
-        content_blocks: useBlocks ? blocks : null,
+        content: contentMode === "classic" ? content : "",
+        content_blocks: contentMode === "blocks" ? blocks : null,
+        content_canvas: contentMode === "canvas" ? canvasDoc : null,
         cover_image_url: coverImageUrl,
         published,
       };
@@ -184,24 +206,31 @@ export default function PostEditor({ post }: Props) {
       </div>
 
       <div>
-        <div className="mb-1 flex items-center justify-between">
+        <div className="mb-2 flex items-center justify-between">
           <label className="block text-sm font-medium">Content</label>
-          <button
-            type="button"
-            onClick={() => setUseBlocks((v) => !v)}
-            className="text-xs text-accent underline underline-offset-2"
-          >
-            {useBlocks ? "Switch to simple text editor" : "Switch to block editor"}
-          </button>
+          <div className="flex gap-1 rounded-lg border border-border bg-card p-1">
+            {(["classic", "blocks", "canvas"] as const).map((mode) => (
+              <button
+                key={mode}
+                type="button"
+                onClick={() => setContentMode(mode)}
+                className={`rounded-md px-3 py-1 text-xs font-medium capitalize transition-colors ${
+                  contentMode === mode ? "bg-accent text-white" : "text-foreground/70 hover:bg-foreground/[0.06]"
+                }`}
+              >
+                {mode === "canvas" ? "Free-form canvas" : mode === "blocks" ? "Blocks" : "Simple text"}
+              </button>
+            ))}
+          </div>
         </div>
-        {useBlocks ? (
-          <BlockEditor blocks={blocks} onChange={setBlocks} />
-        ) : (
+        {contentMode === "blocks" && <BlockEditor blocks={blocks} onChange={setBlocks} />}
+        {contentMode === "classic" && (
           <>
             <RichTextEditor content={content} onChange={setContent} />
             {!content && <p className="mt-1 text-xs text-red-500">Content can&apos;t be empty.</p>}
           </>
         )}
+        {contentMode === "canvas" && <CanvasEditor value={canvasDoc} onChange={setCanvasDoc} />}
       </div>
 
       <label className="flex items-center gap-2 text-sm">

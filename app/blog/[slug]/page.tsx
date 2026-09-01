@@ -3,6 +3,8 @@ import { headers } from "next/headers";
 import { sql, type Post } from "@/lib/db";
 import { siteFromHost } from "@/lib/sites";
 import BlockRenderer from "@/components/block-renderer";
+import { CanvasRenderer } from "@/components/canvas-renderer";
+import { normalizeCanvas } from "@/lib/canvas";
 
 export const dynamic = "force-dynamic";
 
@@ -29,14 +31,21 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         // eslint-disable-next-line @next/next/no-img-element
         <img src={post.cover_image_url} alt="" className="rounded-lg w-full object-cover" />
       )}
-      {post.content_blocks && post.content_blocks.length > 0 ? (
-        <BlockRenderer blocks={post.content_blocks} />
-      ) : (
-        <div
-          className="prose prose-neutral dark:prose-invert leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
-      )}
+      {(() => {
+        const canvasDocument = normalizeCanvas(post.content_canvas);
+        if (canvasDocument?.elements.length) {
+          return <CanvasRenderer document={canvasDocument} />;
+        }
+        if (post.content_blocks && post.content_blocks.length > 0) {
+          return <BlockRenderer blocks={post.content_blocks} />;
+        }
+        return (
+          <div
+            className="prose prose-neutral dark:prose-invert leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+        );
+      })()}
     </article>
   );
 }

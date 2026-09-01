@@ -1,4 +1,5 @@
 import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
+import type { CanvasDoc } from "@/lib/canvas";
 
 let cached: NeonQueryFunction<false, false> | null = null;
 
@@ -29,6 +30,7 @@ export type Post = {
   excerpt: string | null;
   content: string;
   content_blocks: Block[] | null;
+  content_canvas: CanvasDoc | null;
   cover_image_url: string | null;
   published: boolean;
   created_at: string;
@@ -75,5 +77,8 @@ export async function ensureSchema() {
   `;
   await sql`
     ALTER TABLE posts ADD COLUMN IF NOT EXISTS content_blocks JSONB;
+  `;
+  await sql`
+    ALTER TABLE posts ADD COLUMN IF NOT EXISTS content_canvas JSONB;
   `;
 }
