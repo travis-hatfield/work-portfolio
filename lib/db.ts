@@ -28,11 +28,35 @@ export type Post = {
   site: "personal" | "professional";
   excerpt: string | null;
   content: string;
+  content_blocks: Block[] | null;
   cover_image_url: string | null;
   published: boolean;
   created_at: string;
   updated_at: string;
 };
+
+export type Block =
+  | { id: string; type: "heading"; level: 2 | 3; text: string }
+  | { id: string; type: "paragraph"; html: string }
+  | { id: string; type: "quote"; html: string }
+  | { id: string; type: "divider" }
+  | { id: string; type: "button"; label: string; url: string }
+  | {
+      id: string;
+      type: "image";
+      url: string;
+      caption?: string;
+      width: 25 | 50 | 75 | 100;
+      align: "left" | "center" | "right";
+    }
+  | {
+      id: string;
+      type: "image-text";
+      imageUrl: string;
+      html: string;
+      imageSide: "left" | "right";
+    }
+  | { id: string; type: "gallery"; images: { url: string; caption?: string }[] };
 
 export async function ensureSchema() {
   await sql`
@@ -48,5 +72,8 @@ export async function ensureSchema() {
       created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
+  `;
+  await sql`
+    ALTER TABLE posts ADD COLUMN IF NOT EXISTS content_blocks JSONB;
   `;
 }

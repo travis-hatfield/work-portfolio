@@ -2,13 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { Post } from "@/lib/db";
+import type { Post, Block } from "@/lib/db";
 import RichTextEditor from "@/components/rich-text-editor";
+import BlockEditor from "@/components/block-editor";
 
 type Props = {
   post?: Pick<
     Post,
-    "id" | "title" | "slug" | "site" | "excerpt" | "content" | "cover_image_url" | "published"
+    "id" | "title" | "slug" | "site" | "excerpt" | "content" | "content_blocks" | "cover_image_url" | "published"
   >;
 };
 
@@ -19,6 +20,9 @@ export default function PostEditor({ post }: Props) {
   const [site, setSite] = useState<"personal" | "professional">(post?.site ?? "professional");
   const [excerpt, setExcerpt] = useState(post?.excerpt ?? "");
   const [content, setContent] = useState(post?.content ?? "");
+  const [blocks, setBlocks] = useState<Block[]>(post?.content_blocks ?? []);
+  // Existing posts saved before the block editor keep editing as classic HTML.
+  const [useBlocks, setUseBlocks] = useState(!post || Boolean(post?.content_blocks));
   const [coverImageUrl, setCoverImageUrl] = useState(post?.cover_image_url ?? "");
   const [published, setPublished] = useState(post?.published ?? false);
   const [saving, setSaving] = useState(false);
@@ -62,14 +66,28 @@ export default function PostEditor({ post }: Props) {
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    if (!content || content === "<p></p>") {
+    if (useBlocks) {
+      if (blocks.length === 0) {
+        setError("Add at least one block.");
+        return;
+      }
+    } else if (!content || content === "<p></p>") {
       setError("Content can't be empty.");
       return;
     }
     setSaving(true);
     setError(null);
     try {
-      const payload = { title, slug, site, excerpt, content, cover_image_url: coverImageUrl, published };
+      const payload = {
+        title,
+        slug,
+        site,
+        excerpt,
+        content: useBlocks ? "" : content,
+        content_blocks: useBlocks ? blocks : null,
+        cover_image_url: coverImageUrl,
+        published,
+      };
       const res = await fetch(isEditing ? `/api/posts/${post!.id}` : "/api/posts", {
         method: isEditing ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -166,9 +184,24 @@ export default function PostEditor({ post }: Props) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Content</label>
-        <RichTextEditor content={content} onChange={setContent} />
-        {!content && <p className="mt-1 text-xs text-red-500">Content can&apos;t be empty.</p>}
+        <div className="mb-1 flex items-center justify-between">
+          <label className="block text-sm font-medium">Content</label>
+          <button
+            type="button"
+            onClick={() => setUseBlocks((v) => !v)}
+            className="text-xs text-accent underline underline-offset-2"
+          >
+            {useBlocks ? "Switch to simple text editor" : "Switch to block editor"}
+          </button>
+        </div>
+        {useBlocks ? (
+          <BlockEditor blocks={blocks} onChange={setBlocks} />
+        ) : (
+          <>
+            <RichTextEditor content={content} onChange={setContent} />
+            {!content && <p className="mt-1 text-xs text-red-500">Content can&apos;t be empty.</p>}
+          </>
+        )}
       </div>
 
       <label className="flex items-center gap-2 text-sm">

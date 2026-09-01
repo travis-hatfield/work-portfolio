@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import { sql, type Post } from "@/lib/db";
 import { siteFromHost } from "@/lib/sites";
+import BlockRenderer from "@/components/block-renderer";
 
 export const dynamic = "force-dynamic";
 
@@ -28,10 +29,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         // eslint-disable-next-line @next/next/no-img-element
         <img src={post.cover_image_url} alt="" className="rounded-lg w-full object-cover" />
       )}
-      <div
-        className="prose prose-neutral dark:prose-invert leading-relaxed"
-        dangerouslySetInnerHTML={{ __html: post.content }}
-      />
+      {post.content_blocks && post.content_blocks.length > 0 ? (
+        <BlockRenderer blocks={post.content_blocks} />
+      ) : (
+        <div
+          className="prose prose-neutral dark:prose-invert leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
+      )}
     </article>
   );
 }

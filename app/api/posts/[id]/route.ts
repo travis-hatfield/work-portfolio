@@ -8,9 +8,10 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
   const { id } = await params;
   const body = await request.json();
-  const { title, slug, site, excerpt, content, cover_image_url, published } = body;
+  const { title, slug, site, excerpt, content, content_blocks, cover_image_url, published } = body;
 
-  if (!title || !slug || !content || !["personal", "professional"].includes(site)) {
+  const hasBlocks = Array.isArray(content_blocks) && content_blocks.length > 0;
+  if (!title || !slug || (!content && !hasBlocks) || !["personal", "professional"].includes(site)) {
     return NextResponse.json({ error: "Missing or invalid fields" }, { status: 400 });
   }
 
@@ -21,7 +22,8 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
           slug = ${slug},
           site = ${site},
           excerpt = ${excerpt ?? null},
-          content = ${content},
+          content = ${content ?? ""},
+          content_blocks = ${hasBlocks ? JSON.stringify(content_blocks) : null},
           cover_image_url = ${cover_image_url ?? null},
           published = ${Boolean(published)},
           updated_at = now()

@@ -8,16 +8,17 @@ export async function POST(request: Request) {
 
   await ensureSchema();
   const body = await request.json();
-  const { title, slug, site, excerpt, content, cover_image_url, published } = body;
+  const { title, slug, site, excerpt, content, content_blocks, cover_image_url, published } = body;
 
-  if (!title || !slug || !content || !["personal", "professional"].includes(site)) {
+  const hasBlocks = Array.isArray(content_blocks) && content_blocks.length > 0;
+  if (!title || !slug || (!content && !hasBlocks) || !["personal", "professional"].includes(site)) {
     return NextResponse.json({ error: "Missing or invalid fields" }, { status: 400 });
   }
 
   try {
     const rows = await sql`
-      INSERT INTO posts (title, slug, site, excerpt, content, cover_image_url, published)
-      VALUES (${title}, ${slug}, ${site}, ${excerpt ?? null}, ${content}, ${cover_image_url ?? null}, ${Boolean(published)})
+      INSERT INTO posts (title, slug, site, excerpt, content, content_blocks, cover_image_url, published)
+      VALUES (${title}, ${slug}, ${site}, ${excerpt ?? null}, ${content ?? ""}, ${hasBlocks ? JSON.stringify(content_blocks) : null}, ${cover_image_url ?? null}, ${Boolean(published)})
       RETURNING id
     `;
     return NextResponse.json({ id: (rows as unknown as { id: number }[])[0].id });
