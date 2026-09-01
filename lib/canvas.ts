@@ -15,8 +15,17 @@ export type CanvasElement = {
   height: number;
   zIndex: number;
   rotation?: number;
+  opacity?: number;
+  borderRadius?: number;
+  borderColor?: string;
+  borderWidth?: number;
   html?: string;
   fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: number;
+  fontStyle?: "normal" | "italic";
+  letterSpacing?: number;
+  lineHeight?: number;
   color?: string;
   align?: TextAlignment;
   src?: string;
@@ -32,6 +41,7 @@ export type CanvasElement = {
 export type CanvasDoc = {
   designWidth: number;
   height: number;
+  background?: string;
   elements: CanvasElement[];
 };
 
@@ -39,6 +49,7 @@ export function createEmptyCanvas(): CanvasDoc {
   return {
     designWidth: DEFAULT_CANVAS_WIDTH,
     height: DEFAULT_CANVAS_HEIGHT,
+    background: "#ffffff",
     elements: [],
   };
 }
@@ -77,6 +88,7 @@ export function normalizeCanvas(value: unknown): CanvasDoc | null {
       typeof doc.height === "number" && doc.height > 0
         ? doc.height
         : DEFAULT_CANVAS_HEIGHT,
+    background: typeof doc.background === "string" ? doc.background : "#ffffff",
     elements: (doc.elements ?? []).filter(isCanvasElement),
   };
 }

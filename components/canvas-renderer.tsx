@@ -1,15 +1,20 @@
 import type { CSSProperties } from "react";
 import type { CanvasDoc, CanvasElement } from "@/lib/canvas";
 
-type Props = { document: CanvasDoc; className?: string };
-
-export function CanvasRenderer({ document, className = "" }: Props) {
+export function CanvasRenderer({
+  document,
+  className = "",
+}: {
+  document: CanvasDoc;
+  className?: string;
+}) {
   return (
     <div
       className={`relative mx-auto w-full overflow-hidden ${className}`}
       style={{
         maxWidth: document.designWidth,
         aspectRatio: `${document.designWidth} / ${document.height}`,
+        background: document.background ?? "#ffffff",
       }}
     >
       {document.elements
@@ -45,6 +50,11 @@ function RenderedElement({
     zIndex: element.zIndex,
     transform: `rotate(${element.rotation ?? 0}deg)`,
     transformOrigin: "center",
+    opacity: element.opacity ?? 1,
+    borderRadius: element.borderRadius,
+    border: element.borderWidth
+      ? `${element.borderWidth}px solid ${element.borderColor ?? "transparent"}`
+      : undefined,
   };
 
   if (element.type === "text") {
@@ -53,6 +63,11 @@ function RenderedElement({
         style={{
           ...style,
           fontSize: `clamp(10px, ${((element.fontSize ?? 24) / designWidth) * 100}vw, ${element.fontSize ?? 24}px)`,
+          fontFamily: element.fontFamily ?? "inherit",
+          fontWeight: element.fontWeight ?? 400,
+          fontStyle: element.fontStyle ?? "normal",
+          letterSpacing: element.letterSpacing,
+          lineHeight: element.lineHeight ?? 1.2,
           color: element.color ?? "#111827",
           textAlign: element.align ?? "left",
           overflow: "hidden",
@@ -64,28 +79,30 @@ function RenderedElement({
   }
 
   if (element.type === "image") {
+    if (!element.src) return null;
     return (
-      <div style={style}>
-        {element.src ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={element.src}
-            alt={element.alt ?? ""}
-            className="size-full"
-            style={{ objectFit: element.objectFit ?? "cover" }}
-          />
-        ) : null}
+      <div style={{ ...style, overflow: "hidden" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={element.src}
+          alt={element.alt ?? ""}
+          className="size-full"
+          style={{ objectFit: element.objectFit ?? "cover" }}
+        />
       </div>
     );
   }
 
   if (element.type === "button") {
-    const child = (
+    const content = (
       <span
-        className="flex size-full items-center justify-center rounded-md px-3 text-center font-medium"
+        className="flex size-full items-center justify-center px-3 text-center font-medium"
         style={{
           backgroundColor: element.bgColor ?? "#111827",
           color: element.textColor ?? "#ffffff",
+          borderRadius: element.borderRadius ?? 6,
+          fontFamily: element.fontFamily,
+          letterSpacing: element.letterSpacing,
         }}
       >
         {element.label ?? "Button"}
@@ -98,20 +115,22 @@ function RenderedElement({
         target={element.url.startsWith("http") ? "_blank" : undefined}
         rel={element.url.startsWith("http") ? "noopener noreferrer" : undefined}
       >
-        {child}
+        {content}
       </a>
     ) : (
-      <div style={style}>{child}</div>
+      <div style={style}>{content}</div>
     );
   }
 
-  const isLine = element.shapeKind === "line";
+  const line = element.shapeKind === "line";
   return (
     <div
       style={{
         ...style,
-        backgroundColor: isLine ? "transparent" : element.bgColor ?? "#d1d5db",
-        borderTop: isLine ? `2px solid ${element.bgColor ?? "#111827"}` : undefined,
+        backgroundColor: line ? "transparent" : element.bgColor ?? "#d1d5db",
+        borderTop: line
+          ? `${Math.max(1, element.borderWidth ?? 2)}px solid ${element.bgColor ?? "#111827"}`
+          : style.border,
       }}
     />
   );

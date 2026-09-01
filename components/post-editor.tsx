@@ -6,7 +6,9 @@ import type { Post, Block } from "@/lib/db";
 import RichTextEditor from "@/components/rich-text-editor";
 import BlockEditor from "@/components/block-editor";
 import CanvasEditor from "@/components/canvas-editor";
+import CanvasTemplatePicker from "@/components/canvas-template-picker";
 import { createEmptyCanvas, normalizeCanvas, type CanvasDoc } from "@/lib/canvas";
+import type { CanvasTemplate } from "@/lib/canvas-templates";
 
 type Props = {
   post?: Pick<
@@ -41,6 +43,25 @@ export default function PostEditor({ post }: Props) {
     if (!post) return "blocks";
     return "classic";
   });
+  const [templatePickerOpen, setTemplatePickerOpen] = useState(false);
+
+  function chooseContentMode(mode: ContentMode) {
+    setContentMode(mode);
+    if (mode === "canvas" && canvasDoc.elements.length === 0) {
+      setTemplatePickerOpen(true);
+    }
+  }
+
+  function applyCanvasTemplate(document: CanvasDoc, template: CanvasTemplate) {
+    const hasExistingDesign = canvasDoc.elements.length > 0;
+    if (hasExistingDesign && !window.confirm(`Replace the current canvas with the "${template.name}" template?`)) {
+      return;
+    }
+    setCanvasDoc(document);
+    setContentMode("canvas");
+    setTemplatePickerOpen(false);
+  }
+
   const [coverImageUrl, setCoverImageUrl] = useState(post?.cover_image_url ?? "");
   const [published, setPublished] = useState(post?.published ?? false);
   const [saving, setSaving] = useState(false);
@@ -137,6 +158,7 @@ export default function PostEditor({ post }: Props) {
   }
 
   return (
+    <>
     <form onSubmit={handleSave} className="flex flex-col gap-5 max-w-4xl">
       {error && <p className="text-sm text-red-500">{error}</p>}
 
@@ -213,7 +235,7 @@ export default function PostEditor({ post }: Props) {
               <button
                 key={mode}
                 type="button"
-                onClick={() => setContentMode(mode)}
+                onClick={() => chooseContentMode(mode)}
                 className={`rounded-md px-3 py-1 text-xs font-medium capitalize transition-colors ${
                   contentMode === mode ? "bg-accent text-white" : "text-foreground/70 hover:bg-foreground/[0.06]"
                 }`}
@@ -230,7 +252,9 @@ export default function PostEditor({ post }: Props) {
             {!content && <p className="mt-1 text-xs text-red-500">Content can&apos;t be empty.</p>}
           </>
         )}
-        {contentMode === "canvas" && <CanvasEditor value={canvasDoc} onChange={setCanvasDoc} />}
+        {contentMode === "canvas" && (
+          <CanvasEditor value={canvasDoc} onChange={setCanvasDoc} onOpenTemplates={() => setTemplatePickerOpen(true)} />
+        )}
       </div>
 
       <label className="flex items-center gap-2 text-sm">
@@ -261,5 +285,11 @@ export default function PostEditor({ post }: Props) {
         )}
       </div>
     </form>
+    <CanvasTemplatePicker
+      open={templatePickerOpen}
+      onClose={() => setTemplatePickerOpen(false)}
+      onSelect={applyCanvasTemplate}
+    />
+    </>
   );
 }

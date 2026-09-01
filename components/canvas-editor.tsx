@@ -18,7 +18,11 @@ import {
   type CanvasElementType,
 } from "@/lib/canvas";
 
-type Props = { value: CanvasDoc | null; onChange: (doc: CanvasDoc) => void };
+type Props = {
+  value: CanvasDoc | null;
+  onChange: (doc: CanvasDoc) => void;
+  onOpenTemplates?: () => void;
+};
 type History = { past: CanvasDoc[]; present: CanvasDoc; future: CanvasDoc[] };
 
 const GRID = 8;
@@ -28,7 +32,7 @@ const BOTTOM_PADDING = 120;
 const copy = (doc: CanvasDoc) => structuredClone(doc);
 const snap = (value: number) => Math.round(value / GRID) * GRID;
 
-export default function CanvasEditor({ value, onChange }: Props) {
+export default function CanvasEditor({ value, onChange, onOpenTemplates }: Props) {
   const [history, setHistory] = useState<History>(() => ({
     past: [],
     present: copy(value ?? createEmptyCanvas()),
@@ -41,6 +45,7 @@ export default function CanvasEditor({ value, onChange }: Props) {
   const canvasRef = useRef<HTMLDivElement>(null);
   const uploadRef = useRef<HTMLInputElement>(null);
   const interactionStart = useRef<CanvasDoc | null>(null);
+  const replaceImageIdRef = useRef<string | null>(null);
 
   const canvasDoc = history.present;
   const selected = canvasDoc.elements.find((item) => item.id === selectedId) ?? null;
@@ -224,19 +229,39 @@ export default function CanvasEditor({ value, onChange }: Props) {
     return () => window.removeEventListener("keydown", handleKey);
   }, [selectedId, undo, redo, removeSelected]);
 
+  function openImageUpload(replaceElementId?: string) {
+    replaceImageIdRef.current = replaceElementId ?? null;
+    uploadRef.current?.click();
+  }
+
   async function uploadImage(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file) return;
     const response = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
       method: "POST",
+      headers: { "Content-Type": file.type || "application/octet-stream" },
       body: file,
     });
-    if (!response.ok) return alert("The image could not be uploaded.");
+    if (!response.ok) {
+      alert("The image could not be uploaded.");
+      replaceImageIdRef.current = null;
+      return;
+    }
     const data = await response.json();
     const url = data.url ?? data.secure_url;
-    if (!url) return alert("The upload response did not include an image URL.");
-    addElement("image", url);
+    if (!url) {
+      alert("The upload response did not include an image URL.");
+      replaceImageIdRef.current = null;
+      return;
+    }
+    const replacementId = replaceImageIdRef.current;
+    replaceImageIdRef.current = null;
+    if (replacementId) {
+      updateElement(replacementId, { src: url, alt: file.name });
+    } else {
+      addElement("image", url);
+    }
   }
 
   const layer = (action: "front" | "forward" | "backward" | "back") => {
@@ -263,10 +288,22 @@ export default function CanvasEditor({ value, onChange }: Props) {
   return (
     <div className="flex min-h-[700px] overflow-hidden rounded-xl border border-border bg-card">
       <aside className="w-48 shrink-0 border-r border-border bg-background p-3">
+        {onOpenTemplates && (
+          <>
+            <button
+              type="button"
+              onClick={onOpenTemplates}
+              className="mb-4 w-full rounded-lg bg-violet-600 px-3 py-2.5 text-sm font-semibold text-white hover:bg-violet-700"
+            >
+              Browse templates
+            </button>
+            <div className="mb-4 border-t border-border" />
+          </>
+        )}
         <p className="mb-3 text-sm font-semibold">Add element</p>
         <div className="grid gap-2">
           <Tool onClick={() => addElement("text")}>Text</Tool>
-          <Tool onClick={() => uploadRef.current?.click()}>Image</Tool>
+          <Tool onClick={() => openImageUpload()}>Image</Tool>
           <Tool onClick={() => addElement("button")}>Button</Tool>
           <Tool onClick={() => addElement("shape")}>Shape</Tool>
         </div>
@@ -292,6 +329,15 @@ export default function CanvasEditor({ value, onChange }: Props) {
             <option value={1}>100%</option>
             <option value={1.25}>125%</option>
           </select>
+        </label>
+        <label className="mt-4 block text-sm font-semibold">
+          Canvas background
+          <input
+            type="color"
+            className="mt-2 block h-10 w-full rounded border border-border p-1"
+            value={canvasDoc.background ?? "#ffffff"}
+            onChange={(event) => commit({ ...canvasDoc, background: event.target.value })}
+          />
         </label>
       </aside>
       <section className="min-w-0 flex-1">
@@ -345,6 +391,35 @@ export default function CanvasEditor({ value, onChange }: Props) {
             />
           </div>
         )}
+        {selected?.type === "image" && (
+          <div className="flex min-h-14 flex-wrap items-center gap-3 border-b border-border bg-background px-3">
+            <Tool onClick={() => openImageUpload(selected.id)}>Replace image</Tool>
+            <label className="text-sm">
+              Fit
+              <select
+                className="ml-2 rounded border border-border bg-card p-2 text-sm"
+                value={selected.objectFit ?? "cover"}
+                onChange={(event) =>
+                  updateElement(selected.id, { objectFit: event.target.value as "cover" | "contain" })
+                }
+              >
+                <option value="cover">Cover</option>
+                <option value="contain">Contain</option>
+              </select>
+            </label>
+            <label className="text-sm">
+              Rounded corners
+              <input
+                type="number"
+                min={0}
+                max={300}
+                className="ml-2 w-20 rounded border border-border bg-card p-2 text-sm"
+                value={selected.borderRadius ?? 0}
+                onChange={(event) => updateElement(selected.id, { borderRadius: Number(event.target.value) })}
+              />
+            </label>
+          </div>
+        )}
         {selected?.type === "button" && (
           <div className="flex min-h-14 flex-wrap gap-2 border-b border-border bg-background p-3">
             <input
@@ -374,11 +449,12 @@ export default function CanvasEditor({ value, onChange }: Props) {
           <div style={{ width: canvasDoc.designWidth * zoom, minHeight: canvasDoc.height * zoom }}>
             <div
               ref={canvasRef}
-              className="relative origin-top-left bg-white shadow-xl"
+              className="relative origin-top-left shadow-xl"
               style={{
                 width: canvasDoc.designWidth,
                 height: canvasDoc.height,
                 transform: `scale(${zoom})`,
+                background: canvasDoc.background ?? "#ffffff",
                 backgroundImage: "radial-gradient(#d1d5db 1px, transparent 1px)",
                 backgroundSize: `${GRID}px ${GRID}px`,
               }}
@@ -468,6 +544,8 @@ function EditorElement({
     zIndex: element.zIndex,
     transform: `rotate(${element.rotation ?? 0}deg)`,
     transformOrigin: "center",
+    opacity: element.opacity ?? 1,
+    borderRadius: element.borderRadius,
   };
   const choose = (event: ReactMouseEvent) => {
     event.stopPropagation();
@@ -481,6 +559,11 @@ function EditorElement({
         style={{
           ...style,
           fontSize: element.fontSize ?? 28,
+          fontFamily: element.fontFamily ?? "inherit",
+          fontWeight: element.fontWeight ?? 400,
+          fontStyle: element.fontStyle ?? "normal",
+          letterSpacing: element.letterSpacing,
+          lineHeight: element.lineHeight ?? 1.2,
           color: element.color ?? "#111827",
           textAlign: element.align ?? "left",
           overflow: "hidden",
@@ -500,7 +583,18 @@ function EditorElement({
 
   if (element.type === "image")
     return (
-      <div data-canvas-id={element.id} style={style} className="cursor-move" onClick={choose}>
+      <div
+        data-canvas-id={element.id}
+        style={{
+          ...style,
+          overflow: "hidden",
+          border: element.borderWidth
+            ? `${element.borderWidth}px solid ${element.borderColor ?? "transparent"}`
+            : undefined,
+        }}
+        className="cursor-move"
+        onClick={choose}
+      >
         {element.src ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -510,7 +604,11 @@ function EditorElement({
             className="pointer-events-none size-full select-none"
             style={{ objectFit: element.objectFit ?? "cover" }}
           />
-        ) : null}
+        ) : (
+          <div className="pointer-events-none flex size-full items-center justify-center bg-[linear-gradient(135deg,#d1d5db,#f3f4f6,#cbd5e1)] px-6 text-center font-semibold text-gray-600">
+            {element.alt ?? "Select and choose Replace image"}
+          </div>
+        )}
       </div>
     );
 
@@ -518,8 +616,14 @@ function EditorElement({
     return (
       <div data-canvas-id={element.id} style={style} className="cursor-move" onClick={choose}>
         <div
-          className="flex size-full items-center justify-center rounded-md"
-          style={{ backgroundColor: element.bgColor ?? "#111827", color: element.textColor ?? "#fff" }}
+          className="flex size-full items-center justify-center"
+          style={{
+            backgroundColor: element.bgColor ?? "#111827",
+            color: element.textColor ?? "#fff",
+            borderRadius: element.borderRadius ?? 6,
+            fontFamily: element.fontFamily,
+            letterSpacing: element.letterSpacing,
+          }}
         >
           {element.label ?? "Button"}
         </div>
@@ -535,7 +639,11 @@ function EditorElement({
       style={{
         ...style,
         backgroundColor: line ? "transparent" : element.bgColor ?? "#d1d5db",
-        borderTop: line ? `2px solid ${element.bgColor ?? "#111827"}` : undefined,
+        borderTop: line
+          ? `${Math.max(1, element.borderWidth ?? 2)}px solid ${element.bgColor ?? "#111827"}`
+          : element.borderWidth
+            ? `${element.borderWidth}px solid ${element.borderColor ?? "transparent"}`
+            : undefined,
       }}
     />
   );
