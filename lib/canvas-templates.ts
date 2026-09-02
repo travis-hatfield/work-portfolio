@@ -12,7 +12,10 @@ export type CanvasTemplateCategory =
   | "Travel"
   | "Food"
   | "Portfolio"
-  | "Creative";
+  | "Creative"
+  | "Minimal"
+  | "Interview"
+  | "List";
 
 export type CanvasTemplate = {
   id: string;
@@ -572,13 +575,226 @@ export const CANVAS_TEMPLATES: CanvasTemplate[] = [
       ],
     },
   },
+  {
+    id: "medium-minimal",
+    name: "Medium Minimal",
+    description: "A clean, typography-first layout in the style of Medium's default reading view.",
+    category: "Minimal",
+    accent: "#1a8917",
+    document: {
+      designWidth: 900,
+      height: 1150,
+      background: "#ffffff",
+      elements: [
+        image(70, 70, 56, 56, "Replace with your photo", { borderRadius: 28 }),
+        text("Your Name · 6 min read", 140, 82, 400, 30, { fontSize: 16, color: "#6b6b6b" }),
+        text("A Clear, Confident Headline for Your Story", 70, 150, 760, 150, {
+          fontSize: 48,
+          fontWeight: 800,
+          fontFamily: "Georgia, serif",
+          lineHeight: 1.08,
+          color: "#242424",
+        }),
+        text(
+          "A one-sentence subtitle that expands on the headline and pulls readers in.",
+          70,
+          310,
+          700,
+          60,
+          {
+            fontSize: 22,
+            fontFamily: "Georgia, serif",
+            fontStyle: "italic",
+            color: "#6b6b6b",
+          }
+        ),
+        shape(70, 400, 760, 1, "#e5e5e5"),
+        image(70, 430, 760, 400, "Replace with a wide feature image", { borderRadius: 4 }),
+        text(
+          "Begin your story here. Medium-style posts favor generous line height, a comfortable reading width, and minimal visual clutter so the writing carries the page.",
+          70,
+          860,
+          760,
+          220,
+          {
+            fontSize: 21,
+            lineHeight: 1.75,
+            fontFamily: "Georgia, serif",
+            color: "#242424",
+          }
+        ),
+      ],
+    },
+  },
+  {
+    id: "long-form-essay",
+    name: "Long-Form Essay",
+    description: "Numbered sections and a pull quote for reflective, essay-style writing.",
+    category: "Minimal",
+    accent: "#374151",
+    document: {
+      designWidth: 900,
+      height: 1075,
+      background: "#fafafa",
+      elements: [
+        text("ESSAY", 70, 60, 200, 30, { fontSize: 13, fontWeight: 700, letterSpacing: 3, color: "#6b7280" }),
+        text("On Taking the Long Way Around", 70, 110, 760, 140, {
+          fontSize: 52,
+          fontWeight: 800,
+          fontFamily: "Georgia, serif",
+          lineHeight: 1.05,
+          color: "#111827",
+        }),
+        text("Your Name  ·  Published in Your Publication  ·  10 min read", 70, 270, 700, 30, {
+          fontSize: 15,
+          color: "#6b7280",
+        }),
+        shape(70, 320, 760, 1, "#e5e7eb"),
+        text("I.", 70, 360, 60, 35, { fontSize: 22, fontWeight: 700, fontFamily: "Georgia, serif", color: "#111827" }),
+        text(
+          "Open with the scene, the question, or the moment that sets up everything that follows.",
+          70,
+          405,
+          760,
+          140,
+          { fontSize: 20, lineHeight: 1.75, fontFamily: "Georgia, serif", color: "#242424" }
+        ),
+        text(
+          "“A pull quote can restate your strongest idea and give readers a place to pause.”",
+          130,
+          570,
+          640,
+          120,
+          {
+            fontSize: 28,
+            fontStyle: "italic",
+            fontFamily: "Georgia, serif",
+            align: "center",
+            color: "#374151",
+            lineHeight: 1.35,
+          }
+        ),
+        text("II.", 70, 730, 60, 35, { fontSize: 22, fontWeight: 700, fontFamily: "Georgia, serif", color: "#111827" }),
+        text(
+          "Continue developing the argument or story here. Long-form essays benefit from clear section breaks like these.",
+          70,
+          775,
+          760,
+          180,
+          { fontSize: 20, lineHeight: 1.75, fontFamily: "Georgia, serif", color: "#242424" }
+        ),
+      ],
+    },
+  },
+  {
+    id: "qa-interview",
+    name: "Interview / Q&A",
+    description: "Bold questions and readable answers for profile pieces and interviews.",
+    category: "Interview",
+    accent: "#b45309",
+    document: {
+      designWidth: 900,
+      height: 950,
+      background: "#fffaf0",
+      elements: [
+        image(70, 60, 110, 110, "Replace with subject photo", { borderRadius: 55 }),
+        text("In Conversation With [Name]", 200, 70, 620, 90, { fontSize: 36, fontWeight: 800, color: "#111827" }),
+        text("A short intro about who they are and why this conversation matters.", 200, 155, 600, 60, {
+          fontSize: 17,
+          color: "#6b7280",
+          lineHeight: 1.5,
+        }),
+        shape(70, 210, 760, 1, "#e5e7eb"),
+        text("Q: What first drew you to this work?", 70, 250, 760, 50, {
+          fontSize: 22,
+          fontWeight: 700,
+          color: "#b45309",
+        }),
+        text(
+          "Share the interviewee's answer here. Keep questions bold and answers in a lighter weight for easy scanning.",
+          70,
+          310,
+          760,
+          120,
+          { fontSize: 19, lineHeight: 1.6, color: "#242424" }
+        ),
+        text("Q: What's the biggest lesson you've learned?", 70, 450, 760, 50, {
+          fontSize: 22,
+          fontWeight: 700,
+          color: "#b45309",
+        }),
+        text("Add the second answer here.", 70, 510, 760, 120, { fontSize: 19, lineHeight: 1.6, color: "#242424" }),
+        text("Q: What's next for you?", 70, 650, 760, 50, { fontSize: 22, fontWeight: 700, color: "#b45309" }),
+        text("Add the third answer here.", 70, 710, 760, 120, { fontSize: 19, lineHeight: 1.6, color: "#242424" }),
+      ],
+    },
+  },
+  {
+    id: "numbered-list",
+    name: "Numbered List",
+    description: "A scannable listicle layout with numbered points, popular for roundups and tips posts.",
+    category: "List",
+    accent: "#1d4ed8",
+    document: {
+      designWidth: 900,
+      height: 1050,
+      background: "#ffffff",
+      elements: [
+        text("LISTICLE", 70, 55, 200, 30, { fontSize: 13, fontWeight: 700, letterSpacing: 3, color: "#1d4ed8" }),
+        text("5 Things I Wish I Knew Sooner", 70, 100, 760, 110, { fontSize: 46, fontWeight: 800, color: "#111827" }),
+        text("A short intro paragraph framing why this list matters to the reader.", 70, 225, 760, 60, {
+          fontSize: 19,
+          color: "#4b5563",
+          lineHeight: 1.5,
+        }),
+        text("1", 70, 320, 50, 50, { fontSize: 34, fontWeight: 800, color: "#1d4ed8" }),
+        text("First point heading", 140, 325, 690, 35, { fontSize: 24, fontWeight: 700, color: "#111827" }),
+        text("Explain the first point in a sentence or two.", 140, 365, 690, 60, {
+          fontSize: 18,
+          lineHeight: 1.5,
+          color: "#374151",
+        }),
+        text("2", 70, 450, 50, 50, { fontSize: 34, fontWeight: 800, color: "#1d4ed8" }),
+        text("Second point heading", 140, 455, 690, 35, { fontSize: 24, fontWeight: 700, color: "#111827" }),
+        text("Explain the second point in a sentence or two.", 140, 495, 690, 60, {
+          fontSize: 18,
+          lineHeight: 1.5,
+          color: "#374151",
+        }),
+        text("3", 70, 580, 50, 50, { fontSize: 34, fontWeight: 800, color: "#1d4ed8" }),
+        text("Third point heading", 140, 585, 690, 35, { fontSize: 24, fontWeight: 700, color: "#111827" }),
+        text("Explain the third point in a sentence or two.", 140, 625, 690, 60, {
+          fontSize: 18,
+          lineHeight: 1.5,
+          color: "#374151",
+        }),
+        text("4", 70, 710, 50, 50, { fontSize: 34, fontWeight: 800, color: "#1d4ed8" }),
+        text("Fourth point heading", 140, 715, 690, 35, { fontSize: 24, fontWeight: 700, color: "#111827" }),
+        text("Explain the fourth point in a sentence or two.", 140, 755, 690, 60, {
+          fontSize: 18,
+          lineHeight: 1.5,
+          color: "#374151",
+        }),
+        text("5", 70, 840, 50, 50, { fontSize: 34, fontWeight: 800, color: "#1d4ed8" }),
+        text("Fifth point heading", 140, 845, 690, 35, { fontSize: 24, fontWeight: 700, color: "#111827" }),
+        text("Explain the fifth point in a sentence or two.", 140, 885, 690, 60, {
+          fontSize: 18,
+          lineHeight: 1.5,
+          color: "#374151",
+        }),
+      ],
+    },
+  },
 ];
 
 export const TEMPLATE_CATEGORIES: Array<"All" | CanvasTemplateCategory> = [
   "All",
   "Blank",
+  "Minimal",
   "Editorial",
   "Personal",
+  "Interview",
+  "List",
   "Travel",
   "Food",
   "Portfolio",
