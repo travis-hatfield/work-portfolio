@@ -14,6 +14,47 @@ function initials(name: string) {
     .toUpperCase();
 }
 
+const coreExpertise = [
+  "HR Business Partnership",
+  "Org Design & Workforce Planning",
+  "Employee Relations",
+  "Performance Calibration & Succession",
+  "Total Rewards & Compensation",
+  "People Analytics & HRIS",
+  "Global Compliance & Entity Setup",
+  "Change Management & RIF Execution",
+  "AI-Enabled HR & Automation",
+];
+
+const careerHighlights = [
+  {
+    title: "Executive partnership through change",
+    detail:
+      "Advised C-level and senior leaders on reorgs and workforce rightsizing; executed compliant RIFs across the Americas, Europe, Asia, and the Middle East, personally handling the most complicated cases, including employees on leave.",
+  },
+  {
+    title: "Technical and creative org support",
+    detail:
+      "~6 years partnering with Product, Engineering, Design, and GTM teams across Fivetran, TrueNorth, Global Eagle, and 30+ Sequoia client companies.",
+  },
+  {
+    title: "AI and systems at scale",
+    detail:
+      "Builds internal AI applications with Claude (HR knowledge assistant, automated reporting, onboarding and leave workflows); implemented Aidora, an AI-native leave platform; led two company-wide Rippling migrations.",
+  },
+  {
+    title: "Global expansion",
+    detail:
+      "Established legal entities in Canada (2x) and Singapore with payroll, benefits, and compliance ready on day one; currently leading Netherlands setup.",
+  },
+];
+
+const education = [
+  { credential: "MS, Human Resources Management", org: "Walden University" },
+  { credential: "BS, Organizational Leadership", org: "Middle Tennessee State University" },
+  { credential: "SHRM-SCP, Senior Certified Professional", org: "Society for Human Resource Management" },
+];
+
 export default async function ResumePage() {
   await ensureSchema();
   const dbRoles = (await sql`SELECT * FROM roles ORDER BY sort_order ASC, id ASC`) as unknown as RoleRow[];
@@ -81,7 +122,44 @@ export default async function ResumePage() {
               </div>
             </dl>
           </div>
+
+          <div className="rounded-xl border border-border bg-card p-5">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-muted">Core expertise</h3>
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {coreExpertise.map((s) => (
+                <span key={s} className="rounded-full bg-accent-soft px-2.5 py-1 text-xs font-medium text-accent">
+                  {s}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-border bg-card p-5">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-muted">Education &amp; certifications</h3>
+            <ul className="mt-3 flex flex-col gap-3 text-sm">
+              {education.map((e) => (
+                <li key={e.credential}>
+                  <p className="font-medium leading-snug">{e.credential}</p>
+                  <p className="text-muted">{e.org}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </aside>
+
+        <div className="flex flex-col gap-6">
+        {/* Career highlights */}
+        <div className="rounded-xl border border-border bg-card p-5">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-muted">Career highlights</h3>
+          <div className="mt-3 grid gap-4 sm:grid-cols-2">
+            {careerHighlights.map((h) => (
+              <div key={h.title}>
+                <p className="text-sm font-medium">{h.title}</p>
+                <p className="mt-1 text-sm leading-relaxed text-foreground/80">{h.detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Role history */}
         <div className="relative flex flex-col gap-3 before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-px before:bg-border sm:before:left-[19px]">
@@ -117,6 +195,7 @@ export default async function ResumePage() {
               </ul>
             </details>
           ))}
+        </div>
         </div>
       </div>
     </div>
