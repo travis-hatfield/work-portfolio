@@ -16,6 +16,7 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
   const [approach, setApproach] = useState(caseStudy?.approach ?? "");
   const [outcome, setOutcome] = useState(caseStudy?.outcome ?? "");
   const [tools, setTools] = useState<string[]>(caseStudy?.tools ?? []);
+  const [linkUrl, setLinkUrl] = useState(caseStudy?.link_url ?? "");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,7 +42,16 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
     setSaving(true);
     setError(null);
     try {
-      const payload = { section, slug, title, problem, approach, outcome, tools: tools.filter((t) => t.trim()) };
+      const payload = {
+        section,
+        slug,
+        title,
+        problem,
+        approach,
+        outcome,
+        tools: tools.filter((t) => t.trim()),
+        link_url: linkUrl.trim() || null,
+      };
       const res = await fetch(isEditing ? `/api/case-studies/${caseStudy!.id}` : "/api/case-studies", {
         method: isEditing ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -138,6 +148,18 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
       </div>
 
       <StringListEditor label="Tools" items={tools} onChange={setTools} placeholder="e.g. Claude" />
+
+      <div>
+        <label className="block text-sm font-medium mb-1">
+          Read more link <span className="font-normal text-muted">(optional — links the title to a full write-up)</span>
+        </label>
+        <input
+          value={linkUrl}
+          onChange={(e) => setLinkUrl(e.target.value)}
+          placeholder="/blog/my-project-writeup or https://..."
+          className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm"
+        />
+      </div>
 
       <div className="flex items-center gap-3">
         <button

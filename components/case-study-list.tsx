@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type CaseStudyLike = {
   slug: string;
   title: string;
@@ -5,6 +7,7 @@ type CaseStudyLike = {
   approach: string;
   outcome: string;
   tools: string[];
+  link_url?: string | null;
 };
 
 export default function CaseStudyList({ items }: { items: CaseStudyLike[] }) {
@@ -12,7 +15,15 @@ export default function CaseStudyList({ items }: { items: CaseStudyLike[] }) {
     <div className="flex flex-col gap-5">
       {items.map((c) => (
         <article key={c.slug} className="rounded-lg border border-border bg-card p-5">
-          <h2 className="font-medium">{c.title}</h2>
+          <h2 className="font-medium">
+            {c.link_url ? (
+              <Link href={c.link_url} className="hover:underline">
+                {c.title} <span aria-hidden="true">→</span>
+              </Link>
+            ) : (
+              c.title
+            )}
+          </h2>
           <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-3">
             <div>
               <dt className="text-muted">Problem</dt>
