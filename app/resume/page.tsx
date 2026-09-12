@@ -1,8 +1,14 @@
-import { roles, profile } from "@/lib/data";
+import { roles as staticRoles, profile } from "@/lib/data";
+import { sql, ensureSchema, type RoleRow } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Resume — Travis Hatfield" };
 
-export default function ResumePage() {
+export default async function ResumePage() {
+  await ensureSchema();
+  const dbRoles = (await sql`SELECT * FROM roles ORDER BY sort_order ASC, id ASC`) as unknown as RoleRow[];
+  const roles = dbRoles.length > 0 ? dbRoles : staticRoles;
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-wrap items-baseline justify-between gap-3">
@@ -14,7 +20,10 @@ export default function ResumePage() {
 
       <div className="flex flex-col divide-y divide-border rounded-lg border border-border bg-card">
         {roles.map((role) => (
-          <details key={role.company + role.dates} className="group px-5 py-4">
+          <details
+            key={"id" in role ? String(role.id) : role.company + role.dates}
+            className="group px-5 py-4"
+          >
             <summary className="flex items-start justify-between gap-4">
               <div>
                 <p className="font-medium">
