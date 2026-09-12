@@ -2,11 +2,13 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-  --background: #fafafa;
-  --foreground: #14161a;
-  --muted: #5b6270;
-  --border: #e4e6ea;
-  --accent: #2b5cff;
+  --background: #f7f7f5;
+  --foreground: #17181c;
+  --muted: #64697a;
+  --border: #e6e5e1;
+  --accent: #3454d1;
+  --accent-soft: #eef1fd;
+  --accent-2: #b4562f;
   --card: #ffffff;
 }
 
@@ -16,6 +18,8 @@
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-2: var(--accent-2);
   --color-card: var(--card);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -23,12 +27,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0b0c0f;
+    --background: #0c0d10;
     --foreground: #ecedf0;
     --muted: #9aa1ad;
-    --border: #22252b;
-    --accent: #6f93ff;
-    --card: #131519;
+    --border: #23252b;
+    --accent: #7d95f5;
+    --accent-soft: #1a2036;
+    --accent-2: #e2915f;
+    --card: #141519;
   }
 }
 
@@ -44,4 +50,8 @@ details > summary {
 }
 details > summary::-webkit-details-marker {
   display: none;
+}
+
+.bg-noise-fade {
+  background-image: radial-gradient(circle at 15% 0%, var(--accent-soft) 0%, transparent 55%);
 }

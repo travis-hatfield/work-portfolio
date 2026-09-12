@@ -1,6 +1,7 @@
 import { aiAssistedProjects } from "@/lib/data";
 import { sql, ensureSchema, type CaseStudyRow } from "@/lib/db";
 import CaseStudyList from "@/components/case-study-list";
+import PageHero from "@/components/page-hero";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "AI-Assisted Projects — Travis Hatfield" };
@@ -13,11 +14,12 @@ export default async function AiAssistedProjectsPage() {
   const items = rows.length > 0 ? rows : aiAssistedProjects;
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">AI-Assisted Projects</h1>
-        <p className="mt-2 text-muted">Work done using AI tooling to ship faster or better — problem, approach, outcome.</p>
-      </div>
+    <div className="flex flex-col gap-8">
+      <PageHero
+        eyebrow="At work"
+        title="AI-Assisted Projects"
+        description="Internal tools built with AI to run a People function faster and more consistently — problem, approach, outcome."
+      />
       <CaseStudyList items={items} />
     </div>
   );
