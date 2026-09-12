@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { headers } from "next/headers";
 import { profile } from "@/lib/data";
-import { siteFromHost } from "@/lib/sites";
 
-const professionalLinks = [
+const links = [
   {
     href: "/resume",
     label: "Resume",
@@ -30,30 +28,7 @@ const professionalLinks = [
   },
 ];
 
-export default async function Home() {
-  const headerList = await headers();
-  const site = siteFromHost(headerList.get("host"));
-
-  if (site === "personal") {
-    return (
-      <div className="flex flex-col gap-8">
-        <section>
-          <h1 className="text-3xl font-semibold tracking-tight">{profile.name}</h1>
-          <p className="mt-2 text-lg text-muted">Personal blog and projects.</p>
-          <p className="mt-4 max-w-2xl leading-relaxed text-foreground/90">{profile.blurb}</p>
-        </section>
-        <section>
-          <Link
-            href="/blog"
-            className="inline-block rounded-lg border border-border bg-card px-5 py-2.5 font-medium hover:border-accent transition-colors"
-          >
-            Read the blog →
-          </Link>
-        </section>
-      </div>
-    );
-  }
-
+export default function Home() {
   return (
     <div className="flex flex-col gap-8">
       <section className="bg-noise-fade -mx-6 -mt-8 rounded-b-2xl px-6 pb-8 pt-10 sm:-mx-8 sm:px-8">
@@ -78,7 +53,7 @@ export default async function Home() {
       </section>
 
       <section className="grid gap-3 sm:grid-cols-2">
-        {professionalLinks.map((l) => (
+        {links.map((l) => (
           <Link
             key={l.href}
             href={l.href}
