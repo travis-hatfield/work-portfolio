@@ -17,6 +17,8 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
   const [outcome, setOutcome] = useState(caseStudy?.outcome ?? "");
   const [tools, setTools] = useState<string[]>(caseStudy?.tools ?? []);
   const [linkUrl, setLinkUrl] = useState(caseStudy?.link_url ?? "");
+  const [screenshots, setScreenshots] = useState<string[]>(caseStudy?.screenshots ?? []);
+  const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,6 +39,32 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
     if (!slugTouched) setSlug(slugify(value));
   }
 
+  async function handleScreenshotUpload(files: FileList) {
+    setUploading(true);
+    setError(null);
+    try {
+      const uploaded: string[] = [];
+      for (const file of Array.from(files).slice(0, 4 - screenshots.length)) {
+        const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
+          method: "POST",
+          body: file,
+        });
+        if (!res.ok) throw new Error("Upload failed");
+        const data = await res.json();
+        uploaded.push(data.url);
+      }
+      setScreenshots((prev) => [...prev, ...uploaded].slice(0, 4));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  function removeScreenshot(index: number) {
+    setScreenshots((prev) => prev.filter((_, i) => i !== index));
+  }
+
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
@@ -51,6 +79,7 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
         outcome,
         tools: tools.filter((t) => t.trim()),
         link_url: linkUrl.trim() || null,
+        screenshots,
       };
       const res = await fetch(isEditing ? `/api/case-studies/${caseStudy!.id}` : "/api/case-studies", {
         method: isEditing ? "PATCH" : "POST",
@@ -148,6 +177,39 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
       </div>
 
       <StringListEditor label="Tools" items={tools} onChange={setTools} placeholder="e.g. Claude" />
+
+      <div>
+        <label className="block text-sm font-medium mb-1">
+          Screenshots <span className="font-normal text-muted">(optional — up to 4, shown right on the project card)</span>
+        </label>
+        {screenshots.length > 0 && (
+          <div className="mb-2 flex flex-wrap gap-2">
+            {screenshots.map((url, i) => (
+              <div key={url} className="relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={url} alt="" className="h-20 w-32 rounded-md border border-border object-cover" />
+                <button
+                  type="button"
+                  onClick={() => removeScreenshot(i)}
+                  className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white"
+                  aria-label="Remove screenshot"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+        {screenshots.length < 4 && (
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={(e) => e.target.files && e.target.files.length > 0 && handleScreenshotUpload(e.target.files)}
+          />
+        )}
+        {uploading && <p className="mt-1 text-sm text-muted">Uploading...</p>}
+      </div>
 
       <div>
         <label className="block text-sm font-medium mb-1">

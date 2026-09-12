@@ -8,6 +8,7 @@ type CaseStudyLike = {
   outcome: string;
   tools: string[];
   link_url?: string | null;
+  screenshots?: string[];
 };
 
 export default function CaseStudyList({ items }: { items: CaseStudyLike[] }) {
@@ -24,6 +25,21 @@ export default function CaseStudyList({ items }: { items: CaseStudyLike[] }) {
               c.title
             )}
           </h2>
+
+          {c.screenshots && c.screenshots.length > 0 && (
+            <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {c.screenshots.map((url) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={url}
+                  src={url}
+                  alt={`${c.title} screenshot`}
+                  className="aspect-video w-full rounded-md border border-border object-cover"
+                />
+              ))}
+            </div>
+          )}
+
           <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-3">
             <div>
               <dt className="text-muted">Problem</dt>
