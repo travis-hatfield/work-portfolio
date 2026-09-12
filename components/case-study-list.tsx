@@ -1,6 +1,13 @@
-import { CaseStudy } from "@/lib/data";
+type CaseStudyLike = {
+  slug: string;
+  title: string;
+  problem: string;
+  approach: string;
+  outcome: string;
+  tools: string[];
+};
 
-export default function CaseStudyList({ items }: { items: CaseStudy[] }) {
+export default function CaseStudyList({ items }: { items: CaseStudyLike[] }) {
   return (
     <div className="flex flex-col gap-5">
       {items.map((c) => (

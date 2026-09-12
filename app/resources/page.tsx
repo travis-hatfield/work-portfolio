@@ -1,9 +1,37 @@
-import { resources } from "@/lib/data";
+import { resources as staticResources } from "@/lib/data";
+import { sql, ensureSchema, type ResourceRow } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Resources — Travis Hatfield" };
 
-export default function ResourcesPage() {
-  const byCategory = resources.reduce<Record<string, typeof resources>>((acc, r) => {
+type ResourceLike = {
+  title: string;
+  description: string;
+  fileType: string;
+  size: string;
+  href: string;
+  category: string;
+};
+
+export default async function ResourcesPage() {
+  await ensureSchema();
+  const dbResources = (await sql`
+    SELECT * FROM resources ORDER BY category ASC, sort_order ASC, id ASC
+  `) as unknown as ResourceRow[];
+
+  const resources: ResourceLike[] =
+    dbResources.length > 0
+      ? dbResources.map((r) => ({
+          title: r.title,
+          description: r.description,
+          fileType: r.file_type,
+          size: r.size,
+          href: r.href,
+          category: r.category,
+        }))
+      : staticResources;
+
+  const byCategory = resources.reduce<Record<string, ResourceLike[]>>((acc, r) => {
     (acc[r.category] ??= []).push(r);
     return acc;
   }, {});
