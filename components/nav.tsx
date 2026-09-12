@@ -22,9 +22,10 @@ export default async function Nav() {
   const label = site === "personal" ? "travishatfield.dev" : "travishatfield.dev/work";
 
   return (
-    <header className="border-b border-border">
+    <header className="sticky top-0 z-10 border-b border-border bg-background/85 backdrop-blur">
       <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3 px-6 py-4">
-        <Link href="/" className="font-mono text-sm font-semibold tracking-tight">
+        <Link href="/" className="flex items-center gap-2 font-mono text-sm font-semibold tracking-tight">
+          <span className="inline-block h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
           {label}
         </Link>
         <nav className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-muted">
@@ -33,7 +34,10 @@ export default async function Nav() {
               {l.label}
             </Link>
           ))}
-          <Link href="/admin" className="hover:text-foreground transition-colors">
+          <Link
+            href="/admin"
+            className="rounded-md border border-border px-2.5 py-1 text-xs hover:border-accent hover:text-foreground transition-colors"
+          >
             Admin Access
           </Link>
         </nav>

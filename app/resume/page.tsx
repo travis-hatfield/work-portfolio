@@ -1,5 +1,6 @@
 import { roles as staticRoles, profile } from "@/lib/data";
 import { sql, ensureSchema, type RoleRow } from "@/lib/db";
+import PageHero from "@/components/page-hero";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Resume — Travis Hatfield" };
@@ -20,15 +21,18 @@ export default async function ResumePage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">Resume</h1>
-        <a
-          href={profile.resumePdf}
-          className="rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-white hover:opacity-90"
-        >
-          Download PDF ↓
-        </a>
-      </div>
+      <PageHero
+        eyebrow="Career history"
+        title="Resume"
+        action={
+          <a
+            href={profile.resumePdf}
+            className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+          >
+            Download PDF ↓
+          </a>
+        }
+      />
 
       <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
         {/* Sidebar */}
@@ -80,31 +84,33 @@ export default async function ResumePage() {
         </aside>
 
         {/* Role history */}
-        <div className="flex flex-col gap-4">
+        <div className="relative flex flex-col gap-6 before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-px before:bg-border sm:before:left-[19px]">
           {roles.map((role, idx) => (
             <details
               key={"id" in role ? String(role.id) : role.company + role.dates}
-              className="group rounded-xl border border-border bg-card px-6 py-5 open:shadow-sm"
+              className="group relative pl-11 sm:pl-12"
               open={idx === 0}
             >
-              <summary className="flex cursor-pointer list-none items-start justify-between gap-4">
-                <div className="flex gap-4">
-                  <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-xs font-semibold text-accent">
-                    {initials(role.company)}
-                  </div>
-                  <div>
-                    <p className="font-medium">{role.title}</p>
-                    <p className="text-sm text-muted">
-                      {role.company} <span aria-hidden="true">·</span> {role.dates}
-                    </p>
-                    <p className="mt-1.5 text-sm text-foreground/80">{role.summary}</p>
-                  </div>
+              <div
+                className={`absolute left-0 top-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-semibold ring-4 ring-background ${
+                  idx === 0 ? "bg-accent text-white" : "bg-accent-soft text-accent"
+                }`}
+              >
+                {initials(role.company)}
+              </div>
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-4 rounded-xl border border-border bg-card px-5 py-4 transition-shadow group-open:shadow-sm">
+                <div>
+                  <p className="font-medium">{role.title}</p>
+                  <p className="text-sm text-muted">
+                    {role.company} <span aria-hidden="true">·</span> {role.dates}
+                  </p>
+                  <p className="mt-1.5 text-sm text-foreground/80">{role.summary}</p>
                 </div>
                 <span className="mt-1 shrink-0 text-muted transition-transform group-open:rotate-45 text-xl leading-none">
                   +
                 </span>
               </summary>
-              <ul className="mt-4 list-disc space-y-1.5 pl-5 text-sm text-foreground/90 marker:text-accent">
+              <ul className="mt-3 list-disc space-y-1.5 rounded-xl bg-card/50 pl-5 text-sm text-foreground/90 marker:text-accent">
                 {role.details.map((d, i) => (
                   <li key={i}>{d}</li>
                 ))}

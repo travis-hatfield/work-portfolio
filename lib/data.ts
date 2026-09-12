@@ -1,8 +1,8 @@
 export const profile = {
   name: "Travis Hatfield",
-  title: "Builder focused on AI-assisted product & workflow work",
+  title: "Senior HR Business Partner · Global People Operations & AI-Enabled HR Leader",
   blurb:
-    "I design and ship AI-assisted tools and workflows — from production features to personal automations. This site is the professional side of a two-domain setup; the personal blog and photo journal live at travishatfield.dev.",
+    "I lead People Operations and HR Business Partnership for high-growth, global teams — org design, workforce planning, employee relations, and compliant execution through RIFs, migrations, and expansion into new countries. I also build the internal AI tools my team runs on: an HR knowledge assistant, automated reporting, and onboarding/offboarding workflows built with Claude.",
   email: "hello@travishatfield.dev",
   personalSite: "https://travishatfield.dev",
   resumePdf: "/resume-travis-hatfield.pdf",
@@ -51,12 +51,15 @@ export type CaseStudy = {
 
 export const aiAssistedProjects: CaseStudy[] = [
   {
-    slug: "example-ai-assisted-1",
-    title: "Example: Automating a Manual Review Workflow",
-    problem: "Placeholder — describe the business problem or bottleneck.",
-    approach: "Placeholder — describe how AI tooling was applied and why.",
-    outcome: "Placeholder — quantify the result (time saved, error rate, adoption).",
-    tools: ["Claude", "Internal tooling"],
+    slug: "hr-knowledge-assistant-and-automation",
+    title: "Building an AI-First People Function with Claude",
+    problem:
+      "A People Ops team supporting 100+ employees across four countries was answering the same policy questions and running the same manual reporting, onboarding, offboarding, and leave processes by hand — slow for employees and a drag on the HRBP team's time for higher-judgment work.",
+    approach:
+      "Built internal AI applications with Claude: an HR knowledge assistant employees can ask policy questions directly, automated headcount and people reporting workflows, and automated onboarding, offboarding, and leave processes. Also implemented Aidora, an AI-native leave-of-absence platform, as part of a broader shift to AI-first ways of working across the People function.",
+    outcome:
+      "Faster, more consistent answers for employees, less manual reporting overhead for the HRBP team, and a leave process that runs with far less back-and-forth — freeing the team to focus on org design, employee relations, and the complex cases that actually need a human.",
+    tools: ["Claude", "Aidora", "Rippling"],
   },
 ];
 
