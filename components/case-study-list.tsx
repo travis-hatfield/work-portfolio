@@ -13,11 +13,11 @@ type CaseStudyLike = {
 
 export default function CaseStudyList({ items }: { items: CaseStudyLike[] }) {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       {items.map((c) => (
         <article
           key={c.slug}
-          className="rounded-xl border border-border bg-card p-6 border-l-4 border-l-accent transition-shadow hover:shadow-sm"
+          className="rounded-xl border border-border bg-card p-5 border-l-4 border-l-accent transition-shadow hover:shadow-sm"
         >
           <h2 className="text-lg font-medium">
             {c.link_url ? (
@@ -43,7 +43,7 @@ export default function CaseStudyList({ items }: { items: CaseStudyLike[] }) {
             </div>
           )}
 
-          <dl className="mt-5 grid gap-5 text-sm sm:grid-cols-3">
+          <dl className="mt-4 grid gap-4 text-sm sm:grid-cols-3">
             <div>
               <dt className="text-xs font-semibold uppercase tracking-wide text-accent">Problem</dt>
               <dd className="mt-1.5 leading-relaxed text-foreground/90">{c.problem}</dd>
@@ -57,7 +57,7 @@ export default function CaseStudyList({ items }: { items: CaseStudyLike[] }) {
               <dd className="mt-1.5 leading-relaxed text-foreground/90">{c.outcome}</dd>
             </div>
           </dl>
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-2">
             {c.tools.map((t) => (
               <span
                 key={t}

@@ -23,7 +23,7 @@ export default async function Nav() {
 
   return (
     <header className="sticky top-0 z-10 border-b border-border bg-background/85 backdrop-blur">
-      <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3 px-6 py-4">
+      <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3 px-6 py-3">
         <Link href="/" className="flex items-center gap-2 font-mono text-sm font-semibold tracking-tight">
           <span className="inline-block h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
           {label}

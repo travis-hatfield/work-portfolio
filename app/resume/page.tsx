@@ -20,7 +20,7 @@ export default async function ResumePage() {
   const roles = dbRoles.length > 0 ? dbRoles : staticRoles;
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       <PageHero
         eyebrow="Career history"
         title="Resume"
@@ -34,21 +34,21 @@ export default async function ResumePage() {
         }
       />
 
-      <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
+      <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
         {/* Sidebar */}
-        <aside className="flex flex-col gap-6 lg:sticky lg:top-8 lg:self-start">
-          <div className="rounded-xl border border-border bg-card p-6">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent text-lg font-semibold text-white">
+        <aside className="flex flex-col gap-4 lg:sticky lg:top-4 lg:self-start">
+          <div className="rounded-xl border border-border bg-card p-5">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-base font-semibold text-white">
               {initials(profile.name)}
             </div>
-            <h2 className="mt-4 text-lg font-semibold">{profile.name}</h2>
-            <p className="mt-1 text-sm text-muted">{profile.title}</p>
-            <p className="mt-4 text-sm leading-relaxed text-foreground/80">{profile.blurb}</p>
+            <h2 className="mt-3 text-lg font-semibold">{profile.name}</h2>
+            <p className="mt-0.5 text-sm text-muted">{profile.title}</p>
+            <p className="mt-3 text-sm leading-relaxed text-foreground/80">{profile.blurb}</p>
           </div>
 
-          <div className="rounded-xl border border-border bg-card p-6">
+          <div className="rounded-xl border border-border bg-card p-5">
             <h3 className="text-xs font-semibold uppercase tracking-wide text-muted">Contact</h3>
-            <dl className="mt-3 flex flex-col gap-2 text-sm">
+            <dl className="mt-2 flex flex-col gap-1.5 text-sm">
               <div className="flex justify-between gap-3">
                 <dt className="text-muted">Email</dt>
                 <dd className="text-right">
@@ -68,9 +68,9 @@ export default async function ResumePage() {
             </dl>
           </div>
 
-          <div className="rounded-xl border border-border bg-card p-6">
+          <div className="rounded-xl border border-border bg-card p-5">
             <h3 className="text-xs font-semibold uppercase tracking-wide text-muted">At a glance</h3>
-            <dl className="mt-3 flex flex-col gap-2 text-sm">
+            <dl className="mt-2 flex flex-col gap-1.5 text-sm">
               <div className="flex justify-between gap-3">
                 <dt className="text-muted">Roles</dt>
                 <dd>{roles.length}</dd>
@@ -84,7 +84,7 @@ export default async function ResumePage() {
         </aside>
 
         {/* Role history */}
-        <div className="relative flex flex-col gap-6 before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-px before:bg-border sm:before:left-[19px]">
+        <div className="relative flex flex-col gap-3 before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-px before:bg-border sm:before:left-[19px]">
           {roles.map((role, idx) => (
             <details
               key={"id" in role ? String(role.id) : role.company + role.dates}
@@ -98,7 +98,7 @@ export default async function ResumePage() {
               >
                 {initials(role.company)}
               </div>
-              <summary className="flex cursor-pointer list-none items-start justify-between gap-4 rounded-xl border border-border bg-card px-5 py-4 transition-shadow group-open:shadow-sm">
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-4 rounded-xl border border-border bg-card px-5 py-3.5 transition-shadow group-open:shadow-sm">
                 <div>
                   <p className="font-medium">{role.title}</p>
                   <p className="text-sm text-muted">

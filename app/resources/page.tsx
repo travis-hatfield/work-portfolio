@@ -38,7 +38,7 @@ export default async function ResourcesPage() {
   }, {});
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       <PageHero eyebrow="Grab and go" title="Resources" description="Templates and files, grouped by category." />
 
       {Object.entries(byCategory).map(([category, items]) => (
