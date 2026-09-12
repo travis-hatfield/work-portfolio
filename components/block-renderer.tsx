@@ -10,7 +10,7 @@ function alignClass(align: "left" | "center" | "right") {
 
 function galleryColsClass(count: number) {
   const n = Math.min(Math.max(count, 1), 4);
-  return { 1: "grid-cols-1", 2: "grid-cols-2", 3: "grid-cols-3", 4: "grid-cols-2 sm:grid-cols-4" }[n];
+  return { 1: "grid-cols-1", 2: "grid-cols-2", 3: "grid-cols-2 sm:grid-cols-3", 4: "grid-cols-1 sm:grid-cols-2" }[n];
 }
 
 export default function BlockRenderer({ blocks }: { blocks: Block[] }) {
@@ -89,7 +89,7 @@ export default function BlockRenderer({ blocks }: { blocks: Block[] }) {
                 {block.images.map((img, i) => (
                   <figure key={i}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img.url} alt={img.caption ?? ""} className="w-full rounded-lg object-cover aspect-square" />
+                    <img src={img.url} alt={img.caption ?? ""} className="w-full rounded-lg border border-border object-cover aspect-video" />
                     {img.caption && (
                       <figcaption className="mt-1 text-center text-xs text-muted">{img.caption}</figcaption>
                     )}
