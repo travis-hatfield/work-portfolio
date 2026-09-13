@@ -1,6 +1,7 @@
 import { resources as staticResources } from "@/lib/data";
 import { sql, ensureSchema, type ResourceRow } from "@/lib/db";
 import PageHero from "@/components/page-hero";
+import Reveal from "@/components/reveal";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Resources — Travis Hatfield" };
@@ -41,9 +42,9 @@ export default async function ResourcesPage() {
     <div className="flex flex-col gap-6">
       <PageHero eyebrow="Grab and go" title="Resources" description="Templates and files, grouped by category." />
 
-      {Object.entries(byCategory).map(([category, items]) => (
-        <div key={category}>
-          <h2 className="mb-3 flex items-center gap-2 text-sm font-medium uppercase tracking-wide text-muted">
+      {Object.entries(byCategory).map(([category, items], gi) => (
+        <Reveal key={category} delay={gi * 90}>
+          <h2 className="mb-3 flex items-center gap-2 font-mono text-xs font-medium uppercase tracking-wide text-muted">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
             {category}
           </h2>
@@ -52,19 +53,19 @@ export default async function ResourcesPage() {
               <a
                 key={r.title}
                 href={r.href}
-                className="flex items-center justify-between gap-4 px-5 py-4 transition-colors hover:bg-accent-soft"
+                className="group flex items-center justify-between gap-4 px-5 py-4 transition-colors hover:bg-accent-soft"
               >
                 <div>
-                  <p className="font-medium">{r.title}</p>
+                  <p className="font-medium transition-colors group-hover:text-accent">{r.title}</p>
                   <p className="text-sm text-muted">{r.description}</p>
                 </div>
-                <span className="shrink-0 rounded-full bg-accent-soft px-2.5 py-1 text-xs font-medium text-accent">
+                <span className="shrink-0 rounded-full bg-accent-soft px-2.5 py-1 font-mono text-xs font-medium text-accent">
                   {r.fileType} · {r.size}
                 </span>
               </a>
             ))}
           </div>
-        </div>
+        </Reveal>
       ))}
     </div>
   );
