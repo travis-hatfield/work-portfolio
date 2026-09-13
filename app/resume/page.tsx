@@ -99,26 +99,20 @@ export default async function ResumePage() {
                 </dd>
               </div>
               <div className="flex justify-between gap-3">
+                <dt className="text-muted">Email</dt>
+                <dd className="text-right">
+                  <a href={`mailto:${profile.secondaryEmail}`} className="text-accent hover:underline">
+                    {profile.secondaryEmail}
+                  </a>
+                </dd>
+              </div>
+              <div className="flex justify-between gap-3">
                 <dt className="text-muted">Site</dt>
                 <dd className="text-right">
                   <a href={profile.personalSite} className="text-accent hover:underline">
                     Personal blog
                   </a>
                 </dd>
-              </div>
-            </dl>
-          </div>
-
-          <div className="rounded-xl border border-border bg-card p-5">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-muted">At a glance</h3>
-            <dl className="mt-2 flex flex-col gap-1.5 text-sm">
-              <div className="flex justify-between gap-3">
-                <dt className="text-muted">Roles</dt>
-                <dd>{roles.length}</dd>
-              </div>
-              <div className="flex justify-between gap-3">
-                <dt className="text-muted">Current</dt>
-                <dd className="text-right">{roles[0]?.company}</dd>
               </div>
             </dl>
           </div>
