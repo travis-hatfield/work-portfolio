@@ -4,6 +4,7 @@ export const profile = {
   blurb:
     "I lead People Operations and HR Business Partnership for high-growth, global teams — org design, workforce planning, employee relations, and compliant execution through RIFs, migrations, and expansion into new countries. I also build the internal AI tools my team runs on: an HR knowledge assistant, automated reporting, and onboarding/offboarding workflows built with Claude.",
   email: "hello@travishatfield.dev",
+  secondaryEmail: "thatfield0720@gmail.com",
   personalSite: "https://travishatfield.dev",
   resumePdf: "/resume-travis-hatfield.pdf",
 };
