@@ -1,47 +1,60 @@
 import Link from "next/link";
 import { profile } from "@/lib/data";
+import Reveal from "@/components/reveal";
+import GlowCard from "@/components/glow-card";
+import HeroStatus from "@/components/hero-status";
 
 const links = [
   {
     href: "/resume",
     label: "Resume",
     desc: "Roles, dates, and a downloadable PDF.",
-    icon: "📄",
+    icon: "▤",
   },
   {
     href: "/ai-assisted-projects",
     label: "AI-Assisted Projects",
     desc: "Internal tools I've built with Claude to run a People function.",
-    icon: "🤖",
+    icon: "◆",
   },
   {
     href: "/personal-ai-projects",
     label: "Personal AI Projects",
     desc: "Independent builds and experiments, run outside of work.",
-    icon: "🛠️",
+    icon: "◇",
   },
   {
     href: "/resources",
     label: "Resources",
     desc: "Templates and files worth sharing.",
-    icon: "🗂️",
+    icon: "▥",
   },
 ];
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-8">
-      <section className="bg-noise-fade -mx-6 -mt-8 rounded-b-2xl px-6 pb-8 pt-10 sm:-mx-8 sm:px-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">People Operations &amp; AI</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">{profile.name}</h1>
-        <p className="mt-2 max-w-xl text-base text-muted">{profile.title}</p>
-        <p className="mt-4 max-w-2xl leading-relaxed text-foreground/90">{profile.blurb}</p>
-        <div className="mt-5 flex flex-wrap items-center gap-3">
+    <div className="flex flex-col gap-10">
+      <section className="-mx-6 -mt-8 flex flex-col gap-5 rounded-b-2xl px-6 pb-10 pt-14 sm:-mx-8 sm:px-8 sm:pt-20">
+        <Reveal>
+          <HeroStatus />
+        </Reveal>
+        <Reveal delay={80}>
+          <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">
+            <span className="text-gradient">{profile.name}</span>
+          </h1>
+        </Reveal>
+        <Reveal delay={140}>
+          <p className="max-w-xl text-base text-muted sm:text-lg">{profile.title}</p>
+        </Reveal>
+        <Reveal delay={200}>
+          <p className="max-w-2xl leading-relaxed text-foreground/85">{profile.blurb}</p>
+        </Reveal>
+        <Reveal delay={260} className="flex flex-wrap items-center gap-3 pt-1">
           <a
             href={profile.resumePdf}
-            className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+            className="group relative overflow-hidden rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white transition-transform hover:-translate-y-0.5"
           >
-            Download resume ↓
+            <span className="relative z-10">Download resume ↓</span>
           </a>
           <a
             href={`mailto:${profile.email}`}
@@ -49,25 +62,31 @@ export default function Home() {
           >
             {profile.email}
           </a>
-        </div>
+        </Reveal>
       </section>
 
       <section className="grid gap-3 sm:grid-cols-2">
-        {links.map((l) => (
-          <Link
-            key={l.href}
-            href={l.href}
-            className="group rounded-xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-accent hover:shadow-md"
-          >
-            <span className="text-xl">{l.icon}</span>
-            <h2 className="mt-2 font-medium">
-              {l.label}{" "}
-              <span className="text-muted transition-transform inline-block group-hover:translate-x-0.5" aria-hidden="true">
-                →
-              </span>
-            </h2>
-            <p className="mt-1 text-sm text-muted">{l.desc}</p>
-          </Link>
+        {links.map((l, i) => (
+          <Reveal key={l.href} delay={i * 70}>
+            <GlowCard as="article" className="h-full rounded-xl border border-border bg-card">
+              <Link
+                href={l.href}
+                className="group relative z-10 flex h-full flex-col gap-2 rounded-xl p-5 transition-transform hover:-translate-y-0.5"
+              >
+                <span className="font-mono text-lg text-accent">{l.icon}</span>
+                <h2 className="font-medium">
+                  {l.label}{" "}
+                  <span
+                    className="inline-block text-muted transition-transform group-hover:translate-x-1 group-hover:text-accent"
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+                </h2>
+                <p className="text-sm text-muted">{l.desc}</p>
+              </Link>
+            </GlowCard>
+          </Reveal>
         ))}
       </section>
     </div>
