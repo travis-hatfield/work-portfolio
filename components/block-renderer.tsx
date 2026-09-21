@@ -1,4 +1,5 @@
 import type { Block } from "@/lib/db";
+import ImageLightbox from "./image-lightbox";
 
 function widthClass(width: 25 | 50 | 75 | 100) {
   return { 25: "w-1/4", 50: "w-1/2", 75: "w-3/4", 100: "w-full" }[width];
@@ -59,9 +60,12 @@ export default function BlockRenderer({ blocks }: { blocks: Block[] }) {
             );
           case "image":
             return (
-              // eslint-disable-next-line @next/next/no-img-element
               <figure key={block.id} className={`${widthClass(block.width)} ${alignClass(block.align)}`}>
-                <img src={block.url} alt={block.caption ?? ""} className="w-full rounded-lg object-cover" />
+                <ImageLightbox
+                  src={block.url}
+                  alt={block.caption ?? ""}
+                  className="w-full rounded-lg object-cover"
+                />
                 {block.caption && (
                   <figcaption className="mt-1.5 text-center text-xs text-muted">{block.caption}</figcaption>
                 )}
@@ -75,8 +79,11 @@ export default function BlockRenderer({ blocks }: { blocks: Block[] }) {
                   block.imageSide === "right" ? "sm:flex-row-reverse" : ""
                 }`}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={block.imageUrl} alt="" className="w-full rounded-lg object-cover sm:w-1/2" />
+                <ImageLightbox
+                  src={block.imageUrl}
+                  alt=""
+                  className="w-full rounded-lg object-cover sm:w-1/2"
+                />
                 <div
                   className="prose prose-neutral dark:prose-invert max-w-none flex-1 leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: block.html }}
@@ -88,8 +95,11 @@ export default function BlockRenderer({ blocks }: { blocks: Block[] }) {
               <div key={block.id} className={`grid gap-2 ${galleryColsClass(block.images.length)}`}>
                 {block.images.map((img, i) => (
                   <figure key={i}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img.url} alt={img.caption ?? ""} className="w-full rounded-lg border border-border object-cover aspect-video" />
+                    <ImageLightbox
+                      src={img.url}
+                      alt={img.caption ?? ""}
+                      className="w-full rounded-lg border border-border object-cover aspect-video"
+                    />
                     {img.caption && (
                       <figcaption className="mt-1 text-center text-xs text-muted">{img.caption}</figcaption>
                     )}
