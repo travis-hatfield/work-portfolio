@@ -6,6 +6,7 @@ export const profile = {
   email: "hello@travishatfield.dev",
   secondaryEmail: "thatfield0720@gmail.com",
   resumePdf: "/resume-travis-hatfield.pdf",
+  photo: "/headshot.jpg", // add this file to /public once uploaded; falls back to initials if missing
 };
 
 export type Role = {
