@@ -82,7 +82,7 @@ export default async function ResumePage() {
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-base font-semibold text-white">
               {initials(profile.name)}
             </div>
-            <h2 className="mt-3 text-lg font-semibold">{profile.name}</h2>
+            <h2 className="mt-3 font-display text-lg font-medium">{profile.name}</h2>
             <p className="mt-0.5 text-sm text-muted">{profile.title}</p>
             <p className="mt-3 text-sm leading-relaxed text-foreground/80">{profile.blurb}</p>
           </div>
@@ -140,7 +140,7 @@ export default async function ResumePage() {
           <div className="mt-3 grid gap-4 sm:grid-cols-2">
             {careerHighlights.map((h) => (
               <div key={h.title}>
-                <p className="text-sm font-medium">{h.title}</p>
+                <p className="font-display text-base font-medium">{h.title}</p>
                 <p className="mt-1 text-sm leading-relaxed text-foreground/80">{h.detail}</p>
               </div>
             ))}
@@ -164,7 +164,7 @@ export default async function ResumePage() {
               </div>
               <summary className="flex cursor-pointer list-none items-start justify-between gap-4 rounded-xl border border-border bg-card px-5 py-3.5 transition-shadow group-open:shadow-sm">
                 <div>
-                  <p className="font-medium">{role.title}</p>
+                  <p className="font-display text-lg font-medium">{role.title}</p>
                   <p className="text-sm text-muted">
                     {role.company} <span aria-hidden="true">·</span> {role.dates}
                   </p>

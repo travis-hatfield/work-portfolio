@@ -55,7 +55,7 @@ export default async function ResourcesPage() {
                 className="flex items-center justify-between gap-4 px-5 py-4 transition-colors hover:bg-accent-soft"
               >
                 <div>
-                  <p className="font-medium">{r.title}</p>
+                  <p className="font-display text-base font-medium">{r.title}</p>
                   <p className="text-sm text-muted">{r.description}</p>
                 </div>
                 <span className="shrink-0 rounded-full bg-accent-soft px-2.5 py-1 text-xs font-medium text-accent">
