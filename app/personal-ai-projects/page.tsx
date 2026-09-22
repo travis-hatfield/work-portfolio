@@ -20,7 +20,7 @@ export default async function PersonalAiProjectsPage() {
         title="Personal AI Projects"
         description="Independent builds and experiments, run outside of work."
       />
-      <CaseStudyList items={items} basePath="/personal-ai-projects" />
+      <CaseStudyList items={items} basePath="/personal-ai-projects" category="Personal AI Project" />
     </div>
   );
 }
