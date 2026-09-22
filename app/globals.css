@@ -23,6 +23,7 @@
   --color-card: var(--card);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-fraunces);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -54,4 +55,8 @@ details > summary::-webkit-details-marker {
 
 .bg-noise-fade {
   background-image: radial-gradient(circle at 15% 0%, var(--accent-soft) 0%, transparent 55%);
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
 }

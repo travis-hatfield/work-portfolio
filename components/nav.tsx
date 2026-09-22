@@ -22,21 +22,21 @@ export default async function Nav() {
   const label = site === "personal" ? "travishatfield.dev" : "travishatfield.dev/work";
 
   return (
-    <header className="sticky top-0 z-10 border-b border-border bg-background/85 backdrop-blur">
-      <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3 px-6 py-3">
+    <header className="sticky top-0 z-10 border-b border-border bg-background/90 backdrop-blur-md">
+      <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3 px-6 py-4">
         <Link href="/" className="flex items-center gap-2 font-mono text-sm font-semibold tracking-tight">
           <span className="inline-block h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
           {label}
         </Link>
-        <nav className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-muted">
+        <nav className="flex flex-wrap items-center gap-x-6 gap-y-1 text-sm text-muted">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className="hover:text-foreground transition-colors">
+            <Link key={l.href} href={l.href} className="relative py-1 transition-colors hover:text-foreground">
               {l.label}
             </Link>
           ))}
           <Link
             href="/admin"
-            className="rounded-md border border-border px-2.5 py-1 text-xs hover:border-accent hover:text-foreground transition-colors"
+            className="rounded-full border border-border px-3 py-1 text-xs text-muted transition-colors hover:border-accent hover:text-foreground"
           >
             Admin Access
           </Link>

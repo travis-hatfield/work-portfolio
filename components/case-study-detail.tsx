@@ -48,7 +48,7 @@ export default function CaseStudyDetail({
           ← Back to {basePathLabel}
         </Link>
         <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-          <h1 className="max-w-2xl text-2xl font-semibold tracking-tight lg:text-3xl">{item.title}</h1>
+          <h1 className="max-w-2xl font-display text-2xl font-medium tracking-tight lg:text-3xl">{item.title}</h1>
           <dl className="grid grid-cols-2 gap-x-8 gap-y-1.5 text-sm shrink-0">
             {item.stats && (
               <>

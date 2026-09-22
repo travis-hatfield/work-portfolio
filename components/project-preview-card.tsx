@@ -95,7 +95,7 @@ export default function ProjectPreviewCard({
 
       {/* Content */}
       <div className="flex flex-1 flex-col gap-2 p-5">
-        <h3 className="text-base font-semibold tracking-tight transition-colors group-hover:text-accent">
+        <h3 className="font-display text-lg font-medium tracking-tight transition-colors group-hover:text-accent">
           {title}
         </h3>
         {stats && <p className="text-xs text-muted">{stats}</p>}
