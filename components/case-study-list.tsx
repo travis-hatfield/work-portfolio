@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ImageLightbox from "@/components/image-lightbox";
 
 type CaseStudyLike = {
   slug: string;
@@ -7,11 +8,18 @@ type CaseStudyLike = {
   approach: string;
   outcome: string;
   tools: string[];
+  stats?: string | null;
   link_url?: string | null;
   screenshots?: string[];
 };
 
-export default function CaseStudyList({ items }: { items: CaseStudyLike[] }) {
+export default function CaseStudyList({
+  items,
+  basePath,
+}: {
+  items: CaseStudyLike[];
+  basePath: string;
+}) {
   return (
     <div className="flex flex-col gap-4">
       {items.map((c) => (
@@ -20,20 +28,16 @@ export default function CaseStudyList({ items }: { items: CaseStudyLike[] }) {
           className="rounded-xl border border-border bg-card p-5 border-l-4 border-l-accent transition-shadow hover:shadow-sm"
         >
           <h2 className="text-lg font-medium">
-            {c.link_url ? (
-              <Link href={c.link_url} className="hover:text-accent transition-colors">
-                {c.title} <span aria-hidden="true">→</span>
-              </Link>
-            ) : (
-              c.title
-            )}
+            <Link href={c.link_url || `${basePath}/${c.slug}`} className="hover:text-accent transition-colors">
+              {c.title} <span aria-hidden="true">→</span>
+            </Link>
           </h2>
+          {c.stats && <p className="mt-1 text-xs text-muted">{c.stats}</p>}
 
           {c.screenshots && c.screenshots.length > 0 && (
             <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
               {c.screenshots.map((url) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <ImageLightbox
                   key={url}
                   src={url}
                   alt={`${c.title} screenshot`}

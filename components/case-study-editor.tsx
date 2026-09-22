@@ -17,6 +17,7 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
   const [outcome, setOutcome] = useState(caseStudy?.outcome ?? "");
   const [tools, setTools] = useState<string[]>(caseStudy?.tools ?? []);
   const [linkUrl, setLinkUrl] = useState(caseStudy?.link_url ?? "");
+  const [stats, setStats] = useState(caseStudy?.stats ?? "");
   const [screenshots, setScreenshots] = useState<string[]>(caseStudy?.screenshots ?? []);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -44,7 +45,7 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
     setError(null);
     try {
       const uploaded: string[] = [];
-      for (const file of Array.from(files).slice(0, 4 - screenshots.length)) {
+      for (const file of Array.from(files).slice(0, 8 - screenshots.length)) {
         const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
           method: "POST",
           body: file,
@@ -53,7 +54,7 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
         const data = await res.json();
         uploaded.push(data.url);
       }
-      setScreenshots((prev) => [...prev, ...uploaded].slice(0, 4));
+      setScreenshots((prev) => [...prev, ...uploaded].slice(0, 8));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Upload failed");
     } finally {
@@ -79,6 +80,7 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
         outcome,
         tools: tools.filter((t) => t.trim()),
         link_url: linkUrl.trim() || null,
+        stats: stats.trim() || null,
         screenshots,
       };
       const res = await fetch(isEditing ? `/api/case-studies/${caseStudy!.id}` : "/api/case-studies", {
@@ -180,7 +182,7 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
 
       <div>
         <label className="block text-sm font-medium mb-1">
-          Screenshots <span className="font-normal text-muted">(optional — up to 4, shown right on the project card)</span>
+          Screenshots <span className="font-normal text-muted">(optional — up to 8, shown right on the project card)</span>
         </label>
         {screenshots.length > 0 && (
           <div className="mb-2 flex flex-wrap gap-2">
@@ -200,7 +202,7 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
             ))}
           </div>
         )}
-        {screenshots.length < 4 && (
+        {screenshots.length < 8 && (
           <input
             type="file"
             accept="image/*"
@@ -219,6 +221,18 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
           value={linkUrl}
           onChange={(e) => setLinkUrl(e.target.value)}
           placeholder="/blog/my-project-writeup or https://..."
+          className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-1">
+          Stats line <span className="font-normal text-muted">(optional — e.g. &ldquo;41 tests · built May–September 2026 · live, internal&rdquo;)</span>
+        </label>
+        <input
+          value={stats}
+          onChange={(e) => setStats(e.target.value)}
+          placeholder="41 tests · built May–September 2026 · live, internal"
           className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm"
         />
       </div>
