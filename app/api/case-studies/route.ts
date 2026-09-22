@@ -8,7 +8,7 @@ export async function POST(request: Request) {
 
   await ensureSchema();
   const body = await request.json();
-  const { section, slug, title, problem, approach, outcome, tools, link_url, screenshots, stats, sort_order } = body;
+  const { section, slug, title, problem, capabilities, methodology, outcome, tools, link_url, screenshots, stats, sort_order } = body;
 
   if (!title || !slug || !["ai-assisted", "personal-ai"].includes(section)) {
     return NextResponse.json({ error: "Missing or invalid fields" }, { status: 400 });
@@ -16,9 +16,9 @@ export async function POST(request: Request) {
 
   try {
     const rows = await sql`
-      INSERT INTO case_studies (section, slug, title, problem, approach, outcome, tools, link_url, screenshots, stats, sort_order)
+      INSERT INTO case_studies (section, slug, title, problem, capabilities, methodology, outcome, tools, link_url, screenshots, stats, sort_order)
       VALUES (
-        ${section}, ${slug}, ${title}, ${problem ?? ""}, ${approach ?? ""}, ${outcome ?? ""},
+        ${section}, ${slug}, ${title}, ${problem ?? ""}, ${capabilities ?? ""}, ${methodology ?? ""}, ${outcome ?? ""},
         ${JSON.stringify(tools ?? [])}, ${link_url ?? null}, ${JSON.stringify(screenshots ?? [])}, ${stats ?? null}, ${sort_order ?? 0}
       )
       RETURNING id

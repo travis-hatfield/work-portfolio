@@ -7,7 +7,8 @@ type CaseStudyLike = {
   title: string;
   listSummary?: string;
   problem: string;
-  approach: string;
+  capabilities: string;
+  methodology: string;
   outcome: string;
   tools: string[];
   stats?: string | null;

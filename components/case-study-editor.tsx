@@ -13,7 +13,8 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
   const [title, setTitle] = useState(caseStudy?.title ?? "");
   const [slug, setSlug] = useState(caseStudy?.slug ?? "");
   const [problem, setProblem] = useState(caseStudy?.problem ?? "");
-  const [approach, setApproach] = useState(caseStudy?.approach ?? "");
+  const [capabilities, setCapabilities] = useState(caseStudy?.capabilities ?? "");
+  const [methodology, setMethodology] = useState(caseStudy?.methodology ?? "");
   const [outcome, setOutcome] = useState(caseStudy?.outcome ?? "");
   const [tools, setTools] = useState<string[]>(caseStudy?.tools ?? []);
   const [linkUrl, setLinkUrl] = useState(caseStudy?.link_url ?? "");
@@ -76,7 +77,8 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
         slug,
         title,
         problem,
-        approach,
+        capabilities,
+        methodology,
         outcome,
         tools: tools.filter((t) => t.trim()),
         link_url: linkUrl.trim() || null,
@@ -159,10 +161,20 @@ export default function CaseStudyEditor({ caseStudy }: Props) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Approach</label>
+        <label className="block text-sm font-medium mb-1">What it does (capabilities)</label>
         <textarea
-          value={approach}
-          onChange={(e) => setApproach(e.target.value)}
+          value={capabilities}
+          onChange={(e) => setCapabilities(e.target.value)}
+          rows={2}
+          className="w-full rounded-lg border border-border bg-card px-3 py-2"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-1">Design & technical approach (methodology)</label>
+        <textarea
+          value={methodology}
+          onChange={(e) => setMethodology(e.target.value)}
           rows={2}
           className="w-full rounded-lg border border-border bg-card px-3 py-2"
         />
