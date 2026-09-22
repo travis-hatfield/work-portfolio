@@ -106,14 +106,6 @@ export default async function ResumePage() {
                   </a>
                 </dd>
               </div>
-              <div className="flex justify-between gap-3">
-                <dt className="text-muted">Site</dt>
-                <dd className="text-right">
-                  <a href={profile.personalSite} className="text-accent hover:underline">
-                    Personal blog
-                  </a>
-                </dd>
-              </div>
             </dl>
           </div>
 
