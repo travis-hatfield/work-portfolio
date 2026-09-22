@@ -75,7 +75,7 @@ export default async function ResumePage() {
         }
       />
 
-      <div className="grid gap-5 lg:grid-cols-[260px_1fr]">
+      <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
         {/* Sidebar — merged into fewer, denser cards */}
         <aside className="flex flex-col gap-4 lg:sticky lg:top-20 lg:self-start">
           <div className="rounded-xl border border-border bg-card p-5">

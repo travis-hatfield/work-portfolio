@@ -33,7 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <Nav />
-        <main className="flex-1 w-full mx-auto max-w-4xl px-6 py-8 [&:has(>.wide)]:max-w-6xl">{children}</main>
+        <main className="flex-1 w-full mx-auto max-w-5xl px-6 py-8 sm:px-10 [&:has(>.wide)]:max-w-7xl">{children}</main>
         <Footer />
       </body>
     </html>
