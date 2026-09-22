@@ -59,6 +59,9 @@ export const aiAssistedProjects: CaseStudy[] = [
       "/case-studies/contractor-management-2.jpg",
       "/case-studies/contractor-management-3.jpg",
       "/case-studies/contractor-management-4.jpg",
+      "/case-studies/contractor-management-5.jpg",
+      "/case-studies/contractor-management-6.jpg",
+      "/case-studies/contractor-management-7.jpg",
     ],
   },
   {
@@ -77,6 +80,10 @@ export const aiAssistedProjects: CaseStudy[] = [
       "/case-studies/spot-bonus-2.jpg",
       "/case-studies/spot-bonus-3.jpg",
       "/case-studies/spot-bonus-4.jpg",
+      "/case-studies/spot-bonus-5.jpg",
+      "/case-studies/spot-bonus-6.jpg",
+      "/case-studies/spot-bonus-7.jpg",
+      "/case-studies/spot-bonus-8.jpg",
     ],
   },
   {
@@ -95,6 +102,10 @@ export const aiAssistedProjects: CaseStudy[] = [
       "/case-studies/hr-assistant-2.jpg",
       "/case-studies/hr-assistant-3.jpg",
       "/case-studies/hr-assistant-4.jpg",
+      "/case-studies/hr-assistant-5.jpg",
+      "/case-studies/hr-assistant-6.jpg",
+      "/case-studies/hr-assistant-7.jpg",
+      "/case-studies/hr-assistant-8.jpg",
     ],
   },
   {
@@ -131,6 +142,10 @@ export const aiAssistedProjects: CaseStudy[] = [
       "/case-studies/headcount-business-case-2.jpg",
       "/case-studies/headcount-business-case-3.jpg",
       "/case-studies/headcount-business-case-4.jpg",
+      "/case-studies/headcount-business-case-5.jpg",
+      "/case-studies/headcount-business-case-6.jpg",
+      "/case-studies/headcount-business-case-7.jpg",
+      "/case-studies/headcount-business-case-8.jpg",
     ],
   },
   {
