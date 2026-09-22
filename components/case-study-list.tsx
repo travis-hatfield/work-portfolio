@@ -27,13 +27,13 @@ export default function CaseStudyList({
   basePath: string;
 }) {
   return (
-    <div className="flex flex-col gap-5">
+    <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:items-start">
       {items.map((c) => {
         const shots = c.screenshots ?? [];
         return (
           <article
             key={c.slug}
-            className="grid grid-cols-1 gap-5 rounded-xl border border-border bg-card p-5 border-l-4 border-l-accent transition-shadow hover:shadow-sm lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-8 lg:p-6"
+            className="flex flex-col gap-5 rounded-xl border border-border bg-card p-5 border-l-4 border-l-accent transition-shadow hover:shadow-sm lg:p-6"
           >
             <div className="flex flex-col">
               <h2 className="text-lg font-medium">
@@ -43,7 +43,7 @@ export default function CaseStudyList({
               </h2>
               {c.stats && <p className="mt-1 text-xs text-muted">{c.stats}</p>}
 
-              <dl className="mt-4 grid flex-1 grid-cols-1 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
+              <dl className="mt-4 grid grid-cols-1 gap-y-3 text-sm">
                 <div>
                   <dt className="text-xs font-semibold uppercase tracking-wide text-accent">Problem</dt>
                   <dd className="mt-1.5 leading-relaxed text-foreground/90">{c.problem}</dd>
