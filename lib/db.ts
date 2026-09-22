@@ -81,6 +81,7 @@ export type CaseStudyRow = {
   tools: string[];
   link_url: string | null;
   screenshots: string[];
+  stats: string | null;
   sort_order: number;
 };
 
@@ -152,6 +153,9 @@ export async function ensureSchema() {
   `;
   await sql`
     ALTER TABLE case_studies ADD COLUMN IF NOT EXISTS screenshots JSONB NOT NULL DEFAULT '[]';
+  `;
+  await sql`
+    ALTER TABLE case_studies ADD COLUMN IF NOT EXISTS stats TEXT;
   `;
 
   await sql`
