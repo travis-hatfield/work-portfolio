@@ -2,14 +2,14 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-  --background: #f7f7f5;
-  --foreground: #17181c;
-  --muted: #64697a;
-  --border: #e6e5e1;
-  --accent: #3454d1;
-  --accent-soft: #eef1fd;
-  --accent-2: #b4562f;
-  --card: #ffffff;
+  --background: #f6f4ec;
+  --foreground: #2b3025;
+  --muted: #75806a;
+  --border: #e1ddc9;
+  --accent: #6b8a5c;
+  --accent-soft: #e8eedc;
+  --accent-2: #e08a6f;
+  --card: #fffdf6;
 }
 
 @theme inline {
@@ -27,14 +27,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0c0d10;
-    --foreground: #ecedf0;
-    --muted: #9aa1ad;
-    --border: #23252b;
-    --accent: #7d95f5;
-    --accent-soft: #1a2036;
-    --accent-2: #e2915f;
-    --card: #141519;
+    --background: #171a13;
+    --foreground: #eef0e6;
+    --muted: #9ba68e;
+    --border: #2c3124;
+    --accent: #94c17e;
+    --accent-soft: #232a1d;
+    --accent-2: #ec9a7c;
+    --card: #1e2218;
   }
 }
 
