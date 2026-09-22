@@ -39,6 +39,7 @@ export type Screenshot = {
 export type CaseStudy = {
   slug: string;
   title: string;
+  listSummary?: string;
   problem: string;
   approach: string;
   outcome: string;
@@ -51,6 +52,8 @@ export const aiAssistedProjects: CaseStudy[] = [
   {
     slug: "contractor-management-workflow",
     title: "Contractor Management: From Request to Signed Contract",
+    listSummary:
+      "A guided intake routes each contractor request through the right approvers and generates the NDA and consulting agreement automatically.",
     problem:
       "Bringing a contractor on used to live in a policy doc: fill out a template, email Finance, email HR, and wait for the right executive to notice the thread. Nobody could tell where a request actually was without digging back through everyone's inbox.",
     approach:
@@ -72,6 +75,8 @@ export const aiAssistedProjects: CaseStudy[] = [
   {
     slug: "spot-bonus-request-routing",
     title: "Spot Bonus Requests: Three Approvals, One Auto-Generated Letter",
+    listSummary:
+      "One form routes a bonus through three approval stages and renders a payroll-ready award letter the moment it clears.",
     problem:
       "A spot bonus had to reach a department head, then Finance, then People Ops, and end with a letter the employee could keep. Approvals were easy to lose track of, and the person who submitted one rarely knew where it stood.",
     approach:
@@ -94,6 +99,8 @@ export const aiAssistedProjects: CaseStudy[] = [
   {
     slug: "hr-assistant-multi-system",
     title: "HR Assistant: One Question Box, Four Systems That Never Synced",
+    listSummary:
+      "A plain-language question box answers from four HR systems at once and surfaces the disagreements between them on its own.",
     problem:
       "Simple questions — how many people in Canada, who starts in the next two weeks, whether a leave of absence has actually ended — lived across four systems that never synced. Anything crossing two of them meant exporting spreadsheets that were stale before the merge was finished.",
     approach:
@@ -116,6 +123,8 @@ export const aiAssistedProjects: CaseStudy[] = [
   {
     slug: "org-chart-live-rippling",
     title: "Org Chart: A Live Read Instead of a Hand-Maintained Slide Deck",
+    listSummary:
+      "A zero-dependency server reads the HR platform directly and draws a company org chart that never goes stale.",
     problem:
       "Every reporting-line question meant opening a Slides deck maintained by hand. It was right on the day it was last touched and quietly wrong every day after, since managers change, people join, and people leave without a slide ever knowing.",
     approach:
@@ -134,6 +143,8 @@ export const aiAssistedProjects: CaseStudy[] = [
   {
     slug: "headcount-business-case-routing",
     title: "Headcount Business Case: A Word Template That Now Routes Itself",
+    listSummary:
+      "A single business case form routes itself through four fixed reviews, so nobody has to chase down who's holding up a request.",
     problem:
       "The headcount process lived in a Word template that got emailed around. Nobody could tell you who had to sign off, in what order, or where a request had been sitting for three weeks — every approval turned into somebody chasing somebody.",
     approach:
@@ -156,6 +167,8 @@ export const aiAssistedProjects: CaseStudy[] = [
   {
     slug: "new-hire-onboarding-checklist",
     title: "New Hire Onboarding: Fifteen Steps in One Place Instead of Four",
+    listSummary:
+      "One dashboard replaces four disconnected onboarding threads with a single phase-by-phase checklist per hire.",
     problem:
       "Onboarding is the most predictable work a People team does and the easiest to drop, because none of it happens in one place — offer paperwork with HR, a laptop with IT, a Day 1 calendar with the manager — held together only by whoever remembers to check.",
     approach:
@@ -177,6 +190,8 @@ export const personalAiProjects: CaseStudy[] = [
   {
     slug: "nyc-building-report",
     title: "NYC Building Report: Address Intelligence from Open Data",
+    listSummary:
+      "Pulls NYC Open Data and OpenStreetMap together so a single address returns structured building facts.",
     problem:
       "Wanted a tool to query NYC property data, cross-reference with Open Street Map, and surface building facts at a glance.",
     approach:
