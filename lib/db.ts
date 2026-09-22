@@ -76,7 +76,8 @@ export type CaseStudyRow = {
   slug: string;
   title: string;
   problem: string;
-  approach: string;
+  capabilities: string;
+  methodology: string;
   outcome: string;
   tools: string[];
   link_url: string | null;
@@ -148,6 +149,12 @@ export async function ensureSchema() {
     );
   `;
 
+  await sql`
+    ALTER TABLE case_studies ADD COLUMN IF NOT EXISTS capabilities TEXT NOT NULL DEFAULT '';
+  `;
+  await sql`
+    ALTER TABLE case_studies ADD COLUMN IF NOT EXISTS methodology TEXT NOT NULL DEFAULT '';
+  `;
   await sql`
     ALTER TABLE case_studies ADD COLUMN IF NOT EXISTS link_url TEXT;
   `;

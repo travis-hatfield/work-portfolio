@@ -7,7 +7,8 @@ type CaseStudyLike = {
   slug: string;
   title: string;
   problem: string;
-  approach: string;
+  capabilities: string;
+  methodology: string;
   outcome: string;
   tools: string[];
   stats?: string | null;
@@ -34,9 +35,10 @@ export default function CaseStudyDetail({
   const rest = shots.slice(1);
 
   const sections = [
-    { id: "problem", label: "Problem", body: item.problem },
-    { id: "approach", label: "Approach", body: item.approach },
-    { id: "outcome", label: "Outcome", body: item.outcome },
+    { id: "problem", label: "The problem", body: item.problem },
+    { id: "capabilities", label: "What it does", body: item.capabilities },
+    { id: "methodology", label: "Design & technical approach", body: item.methodology },
+    { id: "outcome", label: "Outcome & impact", body: item.outcome },
   ];
 
   return (
@@ -80,7 +82,7 @@ export default function CaseStudyDetail({
         </figure>
       )}
 
-      <div className="grid grid-cols-1 gap-12 md:grid-cols-[200px_1fr]">
+      <div className="grid grid-cols-1 gap-12 md:grid-cols-[220px_1fr]">
         <nav className="hidden md:block sticky top-24 self-start space-y-1 text-sm">
           {sections.map((s) => (
             <a
@@ -96,7 +98,7 @@ export default function CaseStudyDetail({
               href="#more-screens"
               className="block rounded-md px-2 py-1 text-muted hover:bg-accent-soft hover:text-accent transition-colors"
             >
-              More screens
+              Every screen
             </a>
           )}
         </nav>
@@ -106,18 +108,21 @@ export default function CaseStudyDetail({
             <div
               key={s.id}
               id={s.id}
-              className="grid grid-cols-1 gap-3 border-b border-border pb-10 last:border-b-0 last:pb-0 md:grid-cols-[100px_1fr] md:gap-8"
+              className="grid grid-cols-1 gap-3 border-b border-border pb-10 last:border-b-0 last:pb-0 md:grid-cols-[120px_1fr] md:gap-8"
             >
               <h2 className="text-xs font-semibold uppercase tracking-wide text-accent md:pt-0.5">
                 {String(i + 1).padStart(2, "0")} — {s.label}
               </h2>
-              <p className="max-w-[65ch] leading-relaxed text-foreground/90">{s.body}</p>
+              <p className="max-w-[68ch] leading-relaxed text-foreground/90">{s.body}</p>
             </div>
           ))}
 
           {rest.length > 0 && (
             <div id="more-screens" className="flex flex-col gap-4 pt-2">
-              <h2 className="text-xs font-semibold uppercase tracking-wide text-accent">More screens</h2>
+              <h2 className="text-xs font-semibold uppercase tracking-wide text-accent">Every screen, explained</h2>
+              <p className="max-w-[68ch] text-sm text-muted">
+                A closer look at each part of the app, in the order you'd actually move through it.
+              </p>
               <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 xl:grid-cols-3">
                 {rest.map((shot) => (
                   <ImageLightbox

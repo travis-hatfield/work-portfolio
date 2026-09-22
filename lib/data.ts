@@ -41,7 +41,8 @@ export type CaseStudy = {
   title: string;
   listSummary?: string;
   problem: string;
-  approach: string;
+  capabilities: string;
+  methodology: string;
   outcome: string;
   tools: string[];
   stats?: string;
@@ -56,8 +57,10 @@ export const aiAssistedProjects: CaseStudy[] = [
       "A guided intake routes each contractor request through the right approvers and generates the NDA and consulting agreement automatically.",
     problem:
       "Bringing a contractor on used to live in a policy doc: fill out a template, email Finance, email HR, and wait for the right executive to notice the thread. Nobody could tell where a request actually was without digging back through everyone's inbox.",
-    approach:
-      "A guided form captures who the contractor is, the scope, the budget, and who should approve it. The approval chain is assembled per request — the executive mapped to the contractor's department, then Finance, then People Ops, then IT/Security when the scope needs system access — and any step can be reassigned without touching code. Each approver gets a Slack DM with approve/deny links; a denial goes back to the submitter with the reason and an edit-and-resubmit link. Once the chain clears, the app generates a completed NDA and Consulting Agreement from the request, ready for DocuSign.",
+    capabilities:
+      "A guided intake form walks the requester through contractor details, scope, budget, and department in a few steps. The app assembles an approval chain automatically for each request, routes it through Slack, generates a completed NDA and Consulting Agreement once approved, and lets People Ops withdraw a request without erasing its history.",
+    methodology:
+      "The approval chain is data-driven rather than hardcoded: it's assembled per request by mapping the contractor's department to the right executive, then Finance, then People Ops, then IT/Security only when the scope needs system access. Any step can be reassigned without a code change. Notifications run through Slack Workflow Builder instead of a bot token, which kept the whole thing shippable without an IT ticket. Document generation from the approved request straight into DocuSign removes a manual re-entry step that used to be its own source of errors.",
     outcome:
       "I can tell within a minute where any request is stuck instead of digging through inboxes. Notifications run through Slack Workflow Builder rather than a bot token, so nothing needed an IT ticket to stand up. A withdrawal feature lets People Ops close a request that stopped being real without deleting the record — it stays visible, closed, with the reason on it, and reopening puts the chain back in play.",
     tools: ["Next.js", "Slack Workflow Builder", "Google SSO", "DocuSign"],
@@ -79,8 +82,10 @@ export const aiAssistedProjects: CaseStudy[] = [
       "One form routes a bonus through three approval stages and renders a payroll-ready award letter the moment it clears.",
     problem:
       "A spot bonus had to reach a department head, then Finance, then People Ops, and end with a letter the employee could keep. Approvals were easy to lose track of, and the person who submitted one rarely knew where it stood.",
-    approach:
-      "One form routes itself through three stages, with each approver notified in Slack as it's their turn. Nobody can approve their own request — if a manager wants a bonus for someone on their own team, it escalates up the chain instead. When the last approval lands, the app renders the award letter as a PDF in the browser, ready for payroll.",
+    capabilities:
+      "One form routes a bonus request through three approval stages — department head, then Finance, then People Ops — notifying each approver in Slack as it becomes their turn. On final approval, the app renders a payroll-ready award letter as a PDF in the browser. Amounts can be revised mid-flight without restarting the whole chain, and every change to an amount keeps its own visible history.",
+    methodology:
+      "Self-approval is blocked structurally: if a manager requests a bonus for someone on their own team, the request escalates up the chain instead of allowing a sign-off. Raising an amount after approval routes back to Finance alone, not the full chain, since only Finance's math changes. A resubmission bug that quietly cleared prior approvals (and once deleted an approver's comment) led to a fix where every resubmission starts a fresh review cycle while keeping earlier decisions visible underneath, rather than erasing them.",
     outcome:
       "The submitter gets pinged after every decision instead of chasing status by hand. Raising an amount after approval sends the request back to Finance alone rather than restarting the whole chain, and the amount carries its own history — hovering shows what it used to be, who changed it, and when. A resubmission bug that quietly cleared old approvals (and once deleted an approver's comment) was fixed so every resubmission starts a fresh cycle with earlier decisions still visible underneath.",
     tools: ["Next.js", "pdf-lib", "Rippling", "Slack Workflow Builder"],
@@ -103,8 +108,10 @@ export const aiAssistedProjects: CaseStudy[] = [
       "A plain-language question box answers from four HR systems at once and surfaces the disagreements between them on its own.",
     problem:
       "Simple questions — how many people in Canada, who starts in the next two weeks, whether a leave of absence has actually ended — lived across four systems that never synced. Anything crossing two of them meant exporting spreadsheets that were stale before the merge was finished.",
-    approach:
-      "A question box answers from live data and hands back a sortable, filterable table. Read-only is structural, not a rule to remember: there's no write method anywhere in the code. Questions run through a query engine that classifies intent deterministically — no network call, no model — so the questions I ask most answer the same way every time; anything unrecognized falls through to an LLM through a company proxy, and the app says it doesn't know rather than guessing. Every answer carries its source and pull time, logged for audit.",
+    capabilities:
+      "A plain-language question box answers from four live HR systems (Rippling, Greenhouse, Deel, Aidora) and returns a sortable, filterable table. It surfaces cross-system disagreements automatically, such as a leave case marked active in one system but ended in another, or a contractor still active after being terminated elsewhere. Every answer carries its data source and the time it was pulled.",
+    methodology:
+      "The system is read-only by construction, not by convention — there is no write method anywhere in the codebase. Questions are classified by a deterministic query engine with no network call and no model involved, so common questions answer identically every time; only unrecognized questions fall through to an LLM via a company proxy, and the app says it doesn't know rather than guessing. That split kept the common path fast and predictable while still handling open-ended questions.",
     outcome:
       "The most useful output turned out to be the disagreements the tool surfaces on its own: leave cases where one system says someone's out while another still shows them active, or a contractor sitting active in one system after being terminated in another. Both used to surface at quarter-end; now they take a minute to find. As of September 2026 it covers roughly 140 employees across 16 departments and 4 countries, with 205 tests.",
     tools: ["Next.js", "Rippling", "Greenhouse", "Deel"],
@@ -127,8 +134,10 @@ export const aiAssistedProjects: CaseStudy[] = [
       "A zero-dependency server reads the HR platform directly and draws a company org chart that never goes stale.",
     problem:
       "Every reporting-line question meant opening a Slides deck maintained by hand. It was right on the day it was last touched and quietly wrong every day after, since managers change, people join, and people leave without a slide ever knowing.",
-    approach:
-      "A plain Node server with zero npm dependencies reads the HR platform's worker API and draws the whole company as a chart. Click anyone to zoom into their team; search by name, title, or department. The sensitive fields — birthdate, compensation, personal email — never leave the server; the page itself only ever receives seven fields: name, title, department, start date, photo, manager, and leave status.",
+    capabilities:
+      "A plain Node server with zero npm dependencies reads the HR platform's worker API directly and renders the entire company as an interactive chart. Anyone can click a person to zoom into their team, or search by name, title, or department. It exports to print/PDF with one team per page.",
+    methodology:
+      "Sensitive fields — birthdate, compensation, personal email — never leave the server; the page itself only ever receives seven fields (name, title, department, start date, photo, manager, leave status). A background refresh warms the data on a timer so cold requests never wait on a live pull, which took response time from roughly 23 seconds down to about 0.02. Because it re-reads the source through the day, people who haven't started yet or who've already left drop off automatically — no manual maintenance required.",
     outcome:
       "Nothing about it needs maintaining — it re-reads the source through the day on its own, and people who haven't started yet or who've already left drop off automatically. A background refresh (data warmed on a timer, cold requests never wait on the live pull) took response time from about 23 seconds to about 0.02. Print/PDF export puts one team per page across the whole company. The Slides deck it replaced is retired.",
     tools: ["Node.js", "Rippling API"],
@@ -147,8 +156,10 @@ export const aiAssistedProjects: CaseStudy[] = [
       "A single business case form routes itself through four fixed reviews, so nobody has to chase down who's holding up a request.",
     problem:
       "The headcount process lived in a Word template that got emailed around. Nobody could tell you who had to sign off, in what order, or where a request had been sitting for three weeks — every approval turned into somebody chasing somebody.",
-    approach:
-      "A hiring manager fills in the business case once — role, level, why it's needed — and it routes through four fixed reviews: the functional leader who owns the team, then Talent Planning, then Finance, then Recruiting. Each reviewer gets a Slack message with approve/decline links. The manager never enters a salary; Talent Planning sets the pay range as part of approving, which flips how the range used to get set by whoever typed into the template first.",
+    capabilities:
+      "A hiring manager fills out a business case once — role, level, justification — and it routes through four fixed reviews: the functional leader, then Talent Planning, then Finance, then Recruiting. Each reviewer gets a Slack message with approve/decline links. A single dashboard lists every open request sorted by longest wait, with a one-click reminder per stage.",
+    methodology:
+      "The manager never sets a salary; Talent Planning sets the pay range as part of approving, which flips how the range used to get decided by whoever typed into the Word template first. The reminder button is rate-limited per stage since reminding is the one repeatable action — a lesson learned after an earlier version let a reminder fire fifty times to the same executive before the limit existed. Every action the app takes, including suppressed or failed messages, is logged for audit.",
     outcome:
       "A request that used to sit in an inbox for three weeks now shows exactly who it's waiting on and for how long. A single page lists everything still waiting, longest wait first, with a rate-limited reminder button per stage — reminding is the one action safe to repeat, which is also exactly the kind of thing that once sent an executive fifty test messages before the rate limit existed. Every action the app has taken is logged, including messages it suppressed or failed to send.",
     tools: ["Next.js", "Slack Workflow Builder"],
@@ -171,8 +182,10 @@ export const aiAssistedProjects: CaseStudy[] = [
       "One dashboard replaces four disconnected onboarding threads with a single phase-by-phase checklist per hire.",
     problem:
       "Onboarding is the most predictable work a People team does and the easiest to drop, because none of it happens in one place — offer paperwork with HR, a laptop with IT, a Day 1 calendar with the manager — held together only by whoever remembers to check.",
-    approach:
-      "A dashboard shows one card per hire: role, manager, days to or since start, current phase, percent complete. Opening a hire shows the full checklist grouped by phase, pre-start through day ninety, with an owner, a due day counted from the start date, and sub-steps on every task. The new hire sees that same checklist and nothing else — no dashboard, no visibility into anyone else's onboarding.",
+    capabilities:
+      "A dashboard shows one card per hire — role, manager, days to or since start, current phase, percent complete. Opening a hire reveals the full fifteen-step checklist grouped by phase, from pre-start through day ninety, each task with an owner and a due date. The new hire sees only their own checklist, with no visibility into anyone else's onboarding.",
+    methodology:
+      "Every task's due date is computed as an offset from the hire's actual start date rather than a fixed calendar day, so a single template works regardless of when someone starts. That design surfaced a real bug: a date parsed at UTC midnight rendered a day early for anyone west of Greenwich, making Day 1 look like Day 2. Fixing the date logic once, in a single shared function instead of the fifteen places it had been duplicated, is what made the tool trustworthy enough to rely on.",
     outcome:
       "Every task's due date is an offset from the start date rather than a fixed day, so one template works for every hire regardless of when they begin — and it surfaced a real bug: a date parsed at UTC midnight rendered a day early for anyone west of Greenwich, making Day 1 look like Day 2. Fixing it in one shared function instead of fifteen scattered ones is what actually made the tool trustworthy.",
     tools: ["Next.js"],
@@ -194,8 +207,10 @@ export const personalAiProjects: CaseStudy[] = [
       "Pulls NYC Open Data and OpenStreetMap together so a single address returns structured building facts.",
     problem:
       "Wanted a tool to query NYC property data, cross-reference with Open Street Map, and surface building facts at a glance.",
-    approach:
-      "Vanilla JS frontend, NYC Open Data APIs (PLUTO, DBN), Overpass API for OSM data, serverless Vercel Functions backend. Single address input → structured JSON output.",
+    capabilities:
+      "A single address input returns structured building facts pulled from NYC's own open data — property records, zoning, and nearby context layered in from OpenStreetMap.",
+    methodology:
+      "Built as a vanilla JS frontend backed by serverless Vercel Functions, with NYC Open Data's PLUTO and DBN datasets doing the heavy lifting and the Overpass API filling in OpenStreetMap context. Kept intentionally lightweight and fully public, with reusable data-fetching patterns in the open-source repo.",
     outcome:
       "Fast, lightweight, fully public. Open-source repo with reusable data fetching patterns.",
     tools: ["Vanilla JS", "NYC Open Data", "Overpass API", "Vercel Functions"],
