@@ -14,7 +14,7 @@ export default async function PersonalAiProjectsPage() {
   const items = rows.length > 0 ? rows : personalAiProjects;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="wide flex flex-col gap-6">
       <PageHero
         eyebrow="Outside of work"
         title="Personal AI Projects"
