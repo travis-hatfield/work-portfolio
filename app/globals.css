@@ -2,14 +2,14 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-  --background: #05070a;
-  --foreground: #e8edf2;
-  --muted: #7b8a9a;
-  --border: #1c2530;
-  --accent: #4fd8c4;
-  --accent-soft: #0f2a28;
-  --accent-2: #b98bff;
-  --card: #0a0e14;
+  --background: #08090b;
+  --foreground: #eceae6;
+  --muted: #7a7873;
+  --border: #1e1e1d;
+  --accent: #d9d4c7;
+  --accent-soft: #171715;
+  --accent-2: #8a6f4e;
+  --card: #0e0f10;
 }
 
 @theme inline {
@@ -40,57 +40,21 @@ details > summary::-webkit-details-marker {
   display: none;
 }
 
-/* Ambient glow + grid texture, futuristic-tech background */
+/* A single quiet mark, not a repeating grid. Barely there. */
 .bg-noise-fade {
-  background-image:
-    radial-gradient(circle at 15% 0%, color-mix(in srgb, var(--accent) 22%, transparent) 0%, transparent 55%),
-    radial-gradient(circle at 90% 20%, color-mix(in srgb, var(--accent-2) 16%, transparent) 0%, transparent 45%),
-    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-  background-size: auto, auto, 42px 42px, 42px 42px;
+  background-image: radial-gradient(ellipse 900px 500px at 20% -10%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 70%);
 }
 
 .font-display {
   font-family: var(--font-display), Georgia, serif;
 }
 
-/* Glow ring used on hover for cards */
-.glow-ring {
-  position: relative;
-}
-.glow-ring::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 300ms ease;
-  pointer-events: none;
-}
-.glow-ring:hover::before {
-  opacity: 1;
-}
-
-/* Scroll-reveal animation, driven by a small client component toggling data-visible */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(10px);
+  transition: opacity 900ms ease, transform 900ms ease;
 }
 [data-reveal="true"] {
   opacity: 1;
   transform: translateY(0);
-}
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 1; }
-}
-.pulse-dot {
-  animation: pulse-glow 2.4s ease-in-out infinite;
 }

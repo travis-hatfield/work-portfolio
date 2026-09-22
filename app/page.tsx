@@ -9,25 +9,21 @@ const professionalLinks = [
     href: "/resume",
     label: "Resume",
     desc: "Roles, dates, and a downloadable PDF.",
-    number: "01",
   },
   {
     href: "/ai-assisted-projects",
     label: "AI-Assisted Projects",
     desc: "Internal tools I've built with Claude to run a People function.",
-    number: "02",
   },
   {
     href: "/personal-ai-projects",
     label: "Personal AI Projects",
     desc: "Independent builds and experiments, run outside of work.",
-    number: "03",
   },
   {
     href: "/resources",
     label: "Resources",
     desc: "Templates and files worth sharing.",
-    number: "04",
   },
 ];
 
@@ -56,71 +52,59 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex flex-col gap-16">
-      <section className="bg-noise-fade -mx-6 -mt-8 rounded-b-3xl px-6 pb-14 pt-14 sm:-mx-8 sm:px-8">
-        <Reveal>
-          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
-            <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_var(--color-accent)]" />
-            People Operations &amp; AI
-          </p>
-        </Reveal>
-        <Reveal delay={80}>
-          <h1 className="mt-4 max-w-3xl font-display text-4xl font-medium leading-[1.08] tracking-tight sm:text-6xl">
-            {profile.name}
-          </h1>
-        </Reveal>
-        <Reveal delay={160}>
-          <p className="mt-4 max-w-xl text-lg text-muted">{profile.title}</p>
-        </Reveal>
-        <Reveal delay={240}>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-foreground/85 sm:text-lg">
-            {profile.blurb}
-          </p>
-        </Reveal>
-        <Reveal delay={320}>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+    <div className="flex flex-col gap-20">
+      <section className="bg-noise-fade -mx-6 -mt-8 px-6 pb-16 pt-16 sm:-mx-8 sm:px-8 md:pt-24">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_auto] md:items-end">
+          <Reveal>
+            <p className="text-xs font-medium uppercase tracking-[0.3em] text-muted">
+              People Operations &amp; AI
+            </p>
+            <h1 className="mt-5 font-display text-[13vw] font-normal leading-[0.92] tracking-tight sm:text-7xl md:text-8xl">
+              {profile.name.split(" ")[0]}
+              <br />
+              <span className="text-muted">{profile.name.split(" ").slice(1).join(" ")}</span>
+            </h1>
+          </Reveal>
+          <div className="max-w-sm md:pb-2 md:text-right">
+            <p className="text-base text-foreground/70">{profile.title}</p>
+          </div>
+        </div>
+
+        <div className="mt-10 grid grid-cols-1 gap-8 border-t border-border pt-8 md:grid-cols-[2fr_1fr]">
+          <p className="max-w-xl text-base leading-relaxed text-foreground/80">{profile.blurb}</p>
+          <div className="flex flex-col items-start gap-3 md:items-end">
             <a
               href={profile.resumePdf}
-              className="rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-background shadow-[0_0_24px_-4px_var(--color-accent)] transition-all hover:-translate-y-0.5 hover:shadow-[0_0_32px_-2px_var(--color-accent)]"
+              className="text-sm font-medium text-foreground underline decoration-accent-2 decoration-2 underline-offset-4 transition-colors hover:text-accent-2"
             >
-              Download resume ↓
+              Download résumé
             </a>
             <a
               href={`mailto:${profile.email}`}
-              className="rounded-full border border-border bg-card px-5 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent"
+              className="text-sm text-muted transition-colors hover:text-foreground"
             >
               {profile.email}
             </a>
           </div>
-        </Reveal>
+        </div>
       </section>
 
       <section>
-        <Reveal>
-          <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Explore</h2>
-        </Reveal>
-        <div className="mt-4 flex flex-col gap-3">
+        <div className="flex flex-col divide-y divide-border border-t border-border">
           {professionalLinks.map((l, i) => (
-            <Reveal key={l.href} delay={i * 90}>
-              <Link
-                href={l.href}
-                className="glow-ring group grid grid-cols-[3rem_1fr_auto] items-center gap-4 rounded-xl border border-border bg-card/60 px-5 py-6 backdrop-blur-sm transition-colors hover:bg-card sm:grid-cols-[3.5rem_1fr_auto]"
-              >
-                <span className="font-mono text-sm text-muted">{l.number}</span>
-                <span>
-                  <span className="font-display text-xl font-medium tracking-tight transition-colors group-hover:text-accent sm:text-2xl">
-                    {l.label}
-                  </span>
-                  <span className="mt-1 block text-sm text-muted">{l.desc}</span>
+            <Link
+              key={l.href}
+              href={l.href}
+              className="group flex flex-col gap-2 py-8 transition-colors sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+            >
+              <div className="flex items-baseline gap-4">
+                <span className="font-mono text-xs text-muted">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-display text-2xl font-normal tracking-tight transition-colors group-hover:text-accent-2 sm:text-3xl">
+                  {l.label}
                 </span>
-                <span
-                  className="text-xl text-muted transition-all group-hover:translate-x-1 group-hover:text-accent"
-                  aria-hidden="true"
-                >
-                  →
-                </span>
-              </Link>
-            </Reveal>
+              </div>
+              <span className="pl-8 text-sm text-muted sm:pl-0 sm:text-right">{l.desc}</span>
+            </Link>
           ))}
         </div>
       </section>

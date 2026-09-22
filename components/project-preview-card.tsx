@@ -35,7 +35,7 @@ export default function ProjectPreviewCard({
     if (!hovering || shots.length <= 1) return;
     intervalRef.current = setInterval(() => {
       setActive((i) => (i + 1) % shots.length);
-    }, 1100);
+    }, 1200);
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
@@ -51,9 +51,8 @@ export default function ProjectPreviewCard({
       href={href}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={handleLeave}
-      className="glow-ring group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_40px_-12px_var(--color-accent)]"
+      className="group flex flex-col overflow-hidden rounded-md border border-border bg-card transition-colors duration-200 hover:border-accent-2/60"
     >
-      {/* Preview surface */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-background">
         {shots.length === 0 ? (
           <div className="flex h-full w-full items-center justify-center text-sm text-muted">
@@ -71,32 +70,18 @@ export default function ProjectPreviewCard({
           ))
         )}
 
-        {/* Scanline overlay for a tech feel */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(to bottom, transparent 0, transparent 3px, rgba(0,0,0,0.12) 4px)",
-          }}
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-30" />
-
-        {/* Category chip */}
-        <span className="absolute left-3 top-3 rounded-full border border-accent-2/40 bg-background/70 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-accent-2 backdrop-blur-md">
+        <span className="absolute left-3 top-3 text-[11px] font-medium uppercase tracking-wide text-background bg-foreground/90 px-2 py-1 rounded-sm">
           {category}
         </span>
 
-        {/* Progress dots */}
         {shots.length > 1 && (
-          <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
+          <div className="absolute bottom-3 left-3 flex gap-1">
             {shots.map((s, i) => (
               <span
                 key={shotUrl(s)}
-                className="h-1.5 rounded-full transition-all duration-300"
+                className="h-0.5 w-4 transition-colors duration-300"
                 style={{
-                  width: i === active ? "1rem" : "0.375rem",
-                  backgroundColor: i === active ? "var(--color-accent)" : "rgba(255,255,255,0.4)",
-                  boxShadow: i === active ? "0 0 8px var(--color-accent)" : "none",
+                  backgroundColor: i === active ? "var(--color-accent-2)" : "rgba(255,255,255,0.3)",
                 }}
               />
             ))}
@@ -104,20 +89,15 @@ export default function ProjectPreviewCard({
         )}
       </div>
 
-      {/* Content */}
       <div className="flex flex-1 flex-col gap-2 p-5">
-        <h3 className="font-display text-lg font-medium tracking-tight transition-colors group-hover:text-accent">
-          {title}
-        </h3>
+        <h3 className="font-display text-lg font-normal tracking-tight">{title}</h3>
         {stats && <p className="font-mono text-xs text-muted">{stats}</p>}
-        <p className="text-sm leading-relaxed text-foreground/85">{summary}</p>
-        <div className="mt-auto flex flex-wrap gap-1.5 pt-3">
-          {tools.slice(0, 4).map((t) => (
-            <span
-              key={t}
-              className="rounded-full bg-accent-soft px-2 py-0.5 text-[11px] font-medium text-accent"
-            >
+        <p className="text-sm leading-relaxed text-foreground/75">{summary}</p>
+        <div className="mt-auto flex flex-wrap gap-x-3 gap-y-1 pt-3 text-xs text-muted">
+          {tools.slice(0, 4).map((t, i) => (
+            <span key={t}>
               {t}
+              {i < Math.min(tools.length, 4) - 1 && <span className="ml-3 text-border">/</span>}
             </span>
           ))}
         </div>
