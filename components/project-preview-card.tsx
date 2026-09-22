@@ -51,7 +51,7 @@ export default function ProjectPreviewCard({
       href={href}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={handleLeave}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_-16px_rgba(0,0,0,0.4)]"
+      className="glow-ring group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_40px_-12px_var(--color-accent)]"
     >
       {/* Preview surface */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-background">
@@ -71,8 +71,18 @@ export default function ProjectPreviewCard({
           ))
         )}
 
+        {/* Scanline overlay for a tech feel */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(to bottom, transparent 0, transparent 3px, rgba(0,0,0,0.12) 4px)",
+          }}
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-30" />
+
         {/* Category chip */}
-        <span className="absolute left-3 top-3 rounded-full bg-background/85 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-accent-2 backdrop-blur-sm">
+        <span className="absolute left-3 top-3 rounded-full border border-accent-2/40 bg-background/70 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-accent-2 backdrop-blur-md">
           {category}
         </span>
 
@@ -85,7 +95,8 @@ export default function ProjectPreviewCard({
                 className="h-1.5 rounded-full transition-all duration-300"
                 style={{
                   width: i === active ? "1rem" : "0.375rem",
-                  backgroundColor: i === active ? "var(--color-accent)" : "rgba(255,255,255,0.5)",
+                  backgroundColor: i === active ? "var(--color-accent)" : "rgba(255,255,255,0.4)",
+                  boxShadow: i === active ? "0 0 8px var(--color-accent)" : "none",
                 }}
               />
             ))}
@@ -98,7 +109,7 @@ export default function ProjectPreviewCard({
         <h3 className="font-display text-lg font-medium tracking-tight transition-colors group-hover:text-accent">
           {title}
         </h3>
-        {stats && <p className="text-xs text-muted">{stats}</p>}
+        {stats && <p className="font-mono text-xs text-muted">{stats}</p>}
         <p className="text-sm leading-relaxed text-foreground/85">{summary}</p>
         <div className="mt-auto flex flex-wrap gap-1.5 pt-3">
           {tools.slice(0, 4).map((t) => (
