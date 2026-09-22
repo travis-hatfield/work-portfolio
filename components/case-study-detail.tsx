@@ -118,19 +118,24 @@ export default function CaseStudyDetail({
           ))}
 
           {rest.length > 0 && (
-            <div id="more-screens" className="flex flex-col gap-4 pt-2">
-              <h2 className="text-xs font-semibold uppercase tracking-wide text-accent">Every screen, explained</h2>
-              <p className="max-w-[68ch] text-sm text-muted">
-                A closer look at each part of the app, in the order you'd actually move through it.
-              </p>
-              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 xl:grid-cols-3">
+            <div id="more-screens" className="flex flex-col gap-5 pt-2">
+              <div>
+                <h2 className="text-xs font-semibold uppercase tracking-wide text-accent">Every screen, explained</h2>
+                <p className="mt-1 max-w-[60ch] text-sm text-muted">
+                  A closer look at each part of the app, in the order you'd actually move through it.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {rest.map((shot) => (
-                  <ImageLightbox
-                    key={shot.url}
-                    src={shot.url}
-                    alt={shot.caption || `${item.title} screenshot`}
-                    caption={shot.caption}
-                  />
+                  <figure key={shot.url} className="flex flex-col gap-2">
+                    <ImageLightbox
+                      src={shot.url}
+                      alt={shot.caption || `${item.title} screenshot`}
+                    />
+                    {shot.caption && (
+                      <figcaption className="text-sm leading-snug text-muted">{shot.caption}</figcaption>
+                    )}
+                  </figure>
                 ))}
               </div>
             </div>
