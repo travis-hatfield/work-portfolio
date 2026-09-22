@@ -70,13 +70,13 @@ export default function CaseStudyDetail({
       </div>
 
       {hero && (
-        <figure className="space-y-2">
+        <figure>
           <ImageLightbox
             src={hero.url}
             alt={hero.caption || `${item.title} screenshot`}
-            className="aspect-[16/9] w-full rounded-xl border border-border object-cover"
+            caption={hero.caption}
+            className="w-full"
           />
-          {hero.caption && <figcaption className="text-sm text-muted">{hero.caption}</figcaption>}
         </figure>
       )}
 
@@ -118,18 +118,14 @@ export default function CaseStudyDetail({
           {rest.length > 0 && (
             <div id="more-screens" className="flex flex-col gap-4 pt-2">
               <h2 className="text-xs font-semibold uppercase tracking-wide text-accent">More screens</h2>
-              <div className="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 xl:grid-cols-3">
                 {rest.map((shot) => (
-                  <figure key={shot.url} className="space-y-2">
-                    <ImageLightbox
-                      src={shot.url}
-                      alt={shot.caption || `${item.title} screenshot`}
-                      className="aspect-[16/10] w-full rounded-lg border border-border object-cover"
-                    />
-                    {shot.caption && (
-                      <figcaption className="text-sm leading-snug text-muted">{shot.caption}</figcaption>
-                    )}
-                  </figure>
+                  <ImageLightbox
+                    key={shot.url}
+                    src={shot.url}
+                    alt={shot.caption || `${item.title} screenshot`}
+                    caption={shot.caption}
+                  />
                 ))}
               </div>
             </div>

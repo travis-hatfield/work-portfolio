@@ -70,7 +70,7 @@ export default function CaseStudyList({
             </div>
 
             {shots.length > 0 && (
-              <div className="grid grid-cols-2 gap-2 content-start">
+              <div className="grid grid-cols-2 gap-3 content-start">
                 {shots.slice(0, 4).map((s) => {
                   const url = shotUrl(s);
                   return (
@@ -78,14 +78,13 @@ export default function CaseStudyList({
                       key={url}
                       src={url}
                       alt={`${c.title} screenshot`}
-                      className="aspect-[16/10] w-full rounded-lg border border-border object-cover"
                     />
                   );
                 })}
                 {shots.length > 4 && (
                   <Link
                     href={c.link_url || `${basePath}/${c.slug}`}
-                    className="flex aspect-[16/10] w-full items-center justify-center rounded-lg border border-dashed border-border text-sm font-medium text-muted hover:border-accent hover:text-accent transition-colors"
+                    className="flex aspect-[16/9] w-full items-center justify-center rounded-xl border border-dashed border-border text-sm font-medium text-muted hover:border-accent hover:text-accent transition-colors"
                   >
                     +{shots.length - 4} more
                   </Link>

@@ -6,24 +6,41 @@ import { X } from "lucide-react";
 interface ImageLightboxProps {
   src: string;
   alt: string;
+  caption?: string;
   className?: string;
 }
 
-export default function ImageLightbox({ src, alt, className }: ImageLightboxProps) {
+export default function ImageLightbox({ src, alt, caption, className }: ImageLightboxProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      {/* Thumbnail */}
-      <img
-        src={src}
-        alt={alt}
-        className={`${className} cursor-pointer transition-opacity hover:opacity-80`}
-        onClick={() => setIsOpen(true)}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => e.key === "Enter" && setIsOpen(true)}
-      />
+      {/* Framed thumbnail */}
+      <div
+        className={`group relative overflow-hidden rounded-xl border border-border bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-8px_rgba(0,0,0,0.35)] transition-all duration-200 hover:shadow-[0_1px_2px_rgba(0,0,0,0.06),0_16px_36px_-8px_rgba(0,0,0,0.45)] hover:-translate-y-0.5 ${className || ""}`}
+      >
+        {/* Browser chrome bar */}
+        <div className="flex items-center gap-1.5 border-b border-border bg-card/80 px-3 py-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+        </div>
+
+        {/* Screenshot */}
+        <button
+          type="button"
+          onClick={() => setIsOpen(true)}
+          className="block w-full cursor-zoom-in overflow-hidden"
+          aria-label={`Expand screenshot: ${alt}`}
+        >
+          <img
+            src={src}
+            alt={alt}
+            className="aspect-[16/9] w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.015]"
+          />
+        </button>
+      </div>
+      {caption && <p className="mt-2 text-sm text-muted">{caption}</p>}
 
       {/* Lightbox Modal */}
       {isOpen && (
@@ -33,21 +50,24 @@ export default function ImageLightbox({ src, alt, className }: ImageLightboxProp
           role="dialog"
           aria-modal="true"
         >
-          {/* Close button */}
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
+            className="absolute top-4 right-4 text-white transition-colors hover:text-gray-300"
             aria-label="Close image"
           >
             <X size={32} />
           </button>
 
-          {/* Image container */}
           <div
-            className="relative max-w-4xl max-h-[90vh] overflow-auto"
+            className="relative max-h-[90vh] max-w-4xl overflow-auto rounded-lg border border-white/10 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <img src={src} alt={alt} className="w-full h-auto" />
+            <div className="flex items-center gap-1.5 bg-[#1a1a1a] px-3 py-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+            </div>
+            <img src={src} alt={alt} className="h-auto w-full" />
           </div>
         </div>
       )}

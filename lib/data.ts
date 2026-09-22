@@ -71,7 +71,7 @@ export const aiAssistedProjects: CaseStudy[] = [
   },
   {
     slug: "spot-bonus-request-routing",
-    title: "Spot Bonus Requests: Multi-Stage Approvals with an Auto-Generated Award Letter",
+    title: "Spot Bonus Requests: Three Approvals, One Auto-Generated Letter",
     problem:
       "A spot bonus had to reach a department head, then Finance, then People Ops, and end with a letter the employee could keep. Approvals were easy to lose track of, and the person who submitted one rarely knew where it stood.",
     approach:
@@ -93,7 +93,7 @@ export const aiAssistedProjects: CaseStudy[] = [
   },
   {
     slug: "hr-assistant-multi-system",
-    title: "HR Assistant: One Question Box Over Four Systems That Don't Talk to Each Other",
+    title: "HR Assistant: One Question Box, Four Systems That Never Synced",
     problem:
       "Simple questions — how many people in Canada, who starts in the next two weeks, whether a leave of absence has actually ended — lived across four systems that never synced. Anything crossing two of them meant exporting spreadsheets that were stale before the merge was finished.",
     approach:
