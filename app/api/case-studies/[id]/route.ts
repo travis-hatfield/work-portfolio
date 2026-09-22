@@ -8,7 +8,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
   const { id } = await params;
   const body = await request.json();
-  const { section, slug, title, problem, approach, outcome, tools, link_url, screenshots, sort_order } = body;
+  const { section, slug, title, problem, approach, outcome, tools, link_url, screenshots, stats, sort_order } = body;
 
   if (!title || !slug || !["ai-assisted", "personal-ai"].includes(section)) {
     return NextResponse.json({ error: "Missing or invalid fields" }, { status: 400 });
@@ -26,6 +26,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
           tools = ${JSON.stringify(tools ?? [])},
           link_url = ${link_url ?? null},
           screenshots = ${JSON.stringify(screenshots ?? [])},
+          stats = ${stats ?? null},
           sort_order = ${sort_order ?? 0},
           updated_at = now()
       WHERE id = ${id}

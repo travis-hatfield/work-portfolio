@@ -20,7 +20,7 @@ export default async function AiAssistedProjectsPage() {
         title="AI-Assisted Projects"
         description="Internal tools built with AI to run a People function faster and more consistently — problem, approach, outcome."
       />
-      <CaseStudyList items={items} />
+      <CaseStudyList items={items} basePath="/ai-assisted-projects" />
     </div>
   );
 }
