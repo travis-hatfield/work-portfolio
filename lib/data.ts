@@ -31,6 +31,11 @@ export const roles: Role[] = [
   },
 ];
 
+export type Screenshot = {
+  url: string;
+  caption?: string;
+};
+
 export type CaseStudy = {
   slug: string;
   title: string;
@@ -39,7 +44,7 @@ export type CaseStudy = {
   outcome: string;
   tools: string[];
   stats?: string;
-  screenshots?: string[];
+  screenshots?: (string | Screenshot)[];
 };
 
 export const aiAssistedProjects: CaseStudy[] = [
@@ -55,13 +60,13 @@ export const aiAssistedProjects: CaseStudy[] = [
     tools: ["Next.js", "Slack Workflow Builder", "Google SSO", "DocuSign"],
     stats: "41 tests · built May–September 2026 · live, internal",
     screenshots: [
-      "/case-studies/contractor-management-1.jpg",
-      "/case-studies/contractor-management-2.jpg",
-      "/case-studies/contractor-management-3.jpg",
-      "/case-studies/contractor-management-4.jpg",
-      "/case-studies/contractor-management-5.jpg",
-      "/case-studies/contractor-management-6.jpg",
-      "/case-studies/contractor-management-7.jpg",
+      { url: "/case-studies/contractor-management-1.jpg", caption: "Landing page — the entry point for anyone starting a new contractor request." },
+      { url: "/case-studies/contractor-management-2.jpg", caption: "Case list — every request at a glance, with status so nobody has to ask where it's stuck." },
+      { url: "/case-studies/contractor-management-3.jpg", caption: "New request wizard — captures scope, budget, and department in a guided flow." },
+      { url: "/case-studies/contractor-management-4.jpg", caption: "Override mode on a case awaiting review — shows exactly who's holding it up." },
+      { url: "/case-studies/contractor-management-5.jpg", caption: "Permissions and roles — the full team directory that drives who approves what." },
+      { url: "/case-studies/contractor-management-6.jpg", caption: "A fully approved case — flat-rate terms and a document-action banner ready for DocuSign." },
+      { url: "/case-studies/contractor-management-7.jpg", caption: "A withdrawn request — closed with its reason intact rather than deleted." },
     ],
   },
   {
@@ -76,14 +81,14 @@ export const aiAssistedProjects: CaseStudy[] = [
     tools: ["Next.js", "pdf-lib", "Rippling", "Slack Workflow Builder"],
     stats: "81 tests · built May–September 2026 · live, internal",
     screenshots: [
-      "/case-studies/spot-bonus-1.jpg",
-      "/case-studies/spot-bonus-2.jpg",
-      "/case-studies/spot-bonus-3.jpg",
-      "/case-studies/spot-bonus-4.jpg",
-      "/case-studies/spot-bonus-5.jpg",
-      "/case-studies/spot-bonus-6.jpg",
-      "/case-studies/spot-bonus-7.jpg",
-      "/case-studies/spot-bonus-8.jpg",
+      { url: "/case-studies/spot-bonus-1.jpg", caption: "Dashboard — every bonus request in flight, sorted by where it's stuck." },
+      { url: "/case-studies/spot-bonus-2.jpg", caption: "New request form — routes itself through department head, Finance, then People Ops." },
+      { url: "/case-studies/spot-bonus-3.jpg", caption: "A request pending its department head — the approval pipeline shown step by step." },
+      { url: "/case-studies/spot-bonus-4.jpg", caption: "Pending Finance — the next stage in the chain, with reviewer and wait time visible." },
+      { url: "/case-studies/spot-bonus-5.jpg", caption: "Changes requested — the approver's note comes back to the submitter with an edit-and-resubmit link." },
+      { url: "/case-studies/spot-bonus-6.jpg", caption: "Decision history — earlier rounds stay visible even after a resubmission." },
+      { url: "/case-studies/spot-bonus-7.jpg", caption: "Fully approved — a payroll-ready award letter PDF generates automatically." },
+      { url: "/case-studies/spot-bonus-8.jpg", caption: "Slack outbox — every notification the app has sent, logged as the audit trail." },
     ],
   },
   {
@@ -98,14 +103,14 @@ export const aiAssistedProjects: CaseStudy[] = [
     tools: ["Next.js", "Rippling", "Greenhouse", "Deel"],
     stats: "205 tests · built June–August 2026 · running locally",
     screenshots: [
-      "/case-studies/hr-assistant-1.jpg",
-      "/case-studies/hr-assistant-2.jpg",
-      "/case-studies/hr-assistant-3.jpg",
-      "/case-studies/hr-assistant-4.jpg",
-      "/case-studies/hr-assistant-5.jpg",
-      "/case-studies/hr-assistant-6.jpg",
-      "/case-studies/hr-assistant-7.jpg",
-      "/case-studies/hr-assistant-8.jpg",
+      { url: "/case-studies/hr-assistant-1.jpg", caption: "The question box — plain-language questions answered from live data, read-only by design." },
+      { url: "/case-studies/hr-assistant-2.jpg", caption: "A sourced answer — every result carries where it came from and when it was pulled." },
+      { url: "/case-studies/hr-assistant-3.jpg", caption: "HR dashboard — headcount, hiring, and attrition pulled live rather than exported by hand." },
+      { url: "/case-studies/hr-assistant-4.jpg", caption: "Employee directory — read-only records across systems that don't otherwise sync." },
+      { url: "/case-studies/hr-assistant-5.jpg", caption: "A cross-system disagreement surfaced automatically — the tool's most useful output." },
+      { url: "/case-studies/hr-assistant-6.jpg", caption: "Org chart view — reporting lines drawn from the same live source." },
+      { url: "/case-studies/hr-assistant-7.jpg", caption: "Compensation view — flagged confidential and handled with the same care as the underlying HR system." },
+      { url: "/case-studies/hr-assistant-8.jpg", caption: "EOR reconciliation — contractor records checked against a second system for drift." },
     ],
   },
   {
@@ -120,10 +125,10 @@ export const aiAssistedProjects: CaseStudy[] = [
     tools: ["Node.js", "Rippling API"],
     stats: "44 tests · built August–September 2026 · live, internal",
     screenshots: [
-      "/case-studies/org-chart-1.jpg",
-      "/case-studies/org-chart-2.jpg",
-      "/case-studies/org-chart-3.jpg",
-      "/case-studies/org-chart-4.jpg",
+      { url: "/case-studies/org-chart-1.jpg", caption: "Whole-company view — every top-level report, drawn live from the HR platform." },
+      { url: "/case-studies/org-chart-2.jpg", caption: "Zoomed into a team — click anyone to see just their reports." },
+      { url: "/case-studies/org-chart-3.jpg", caption: "Search — find anyone by name, title, or department in one box." },
+      { url: "/case-studies/org-chart-4.jpg", caption: "Outline view — the same org as a flat, scannable list for print or export." },
     ],
   },
   {
@@ -138,14 +143,14 @@ export const aiAssistedProjects: CaseStudy[] = [
     tools: ["Next.js", "Slack Workflow Builder"],
     stats: "254 tests · built August–September 2026 · live, internal",
     screenshots: [
-      "/case-studies/headcount-business-case-1.jpg",
-      "/case-studies/headcount-business-case-2.jpg",
-      "/case-studies/headcount-business-case-3.jpg",
-      "/case-studies/headcount-business-case-4.jpg",
-      "/case-studies/headcount-business-case-5.jpg",
-      "/case-studies/headcount-business-case-6.jpg",
-      "/case-studies/headcount-business-case-7.jpg",
-      "/case-studies/headcount-business-case-8.jpg",
+      { url: "/case-studies/headcount-business-case-1.jpg", caption: "Landing page — start a request or see everything still waiting on a decision." },
+      { url: "/case-studies/headcount-business-case-2.jpg", caption: "How approval works — four fixed reviews, shown up front so nobody has to ask." },
+      { url: "/case-studies/headcount-business-case-3.jpg", caption: "Request queue — open cases sorted by how they're moving through the review." },
+      { url: "/case-studies/headcount-business-case-4.jpg", caption: "New business case form — role, level, and justification captured once." },
+      { url: "/case-studies/headcount-business-case-5.jpg", caption: "Request queue view — status and stage visible for every open case at once." },
+      { url: "/case-studies/headcount-business-case-6.jpg", caption: "New request form — the same guided flow, department-first." },
+      { url: "/case-studies/headcount-business-case-7.jpg", caption: "Mid-approval — pay range set by Talent Planning, Finance reviewing next, with a wait timer." },
+      { url: "/case-studies/headcount-business-case-8.jpg", caption: "'Where everything is' — the longest-waiting requests, with a one-click reminder per stage." },
     ],
   },
   {
@@ -160,10 +165,10 @@ export const aiAssistedProjects: CaseStudy[] = [
     tools: ["Next.js"],
     stats: "13 tests · built June 2026 · pilot, running locally",
     screenshots: [
-      "/case-studies/new-hire-onboarding-1.jpg",
-      "/case-studies/new-hire-onboarding-2.jpg",
-      "/case-studies/new-hire-onboarding-3.jpg",
-      "/case-studies/new-hire-onboarding-4.jpg",
+      { url: "/case-studies/new-hire-onboarding-1.jpg", caption: "New hires dashboard — one card per hire, with days to start and percent complete." },
+      { url: "/case-studies/new-hire-onboarding-2.jpg", caption: "The full checklist — every task grouped by phase, pre-start through day ninety." },
+      { url: "/case-studies/new-hire-onboarding-3.jpg", caption: "A task expanded — owner, due date, and sub-steps in one place." },
+      { url: "/case-studies/new-hire-onboarding-4.jpg", caption: "Filtered by owner — HR, manager, or the new hire's own six tasks." },
     ],
   },
 ];
