@@ -49,7 +49,7 @@ export default function CaseStudyDetail({
         </Link>
         <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <h1 className="max-w-2xl font-display text-2xl font-medium tracking-tight lg:text-3xl">{item.title}</h1>
-          <dl className="grid grid-cols-2 gap-x-8 gap-y-1.5 text-sm shrink-0">
+          <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-sm shrink-0 lg:justify-self-end">
             {item.stats && (
               <>
                 <dt className="text-muted">Status</dt>
@@ -122,7 +122,7 @@ export default function CaseStudyDetail({
               <div>
                 <h2 className="text-xs font-semibold uppercase tracking-wide text-accent">Every screen, explained</h2>
                 <p className="mt-1 max-w-[60ch] text-sm text-muted">
-                  A closer look at each part of the app, in the order you'd actually move through it.
+                  A closer look at each part of the app, in the order you&apos;d actually move through it.
                 </p>
               </div>
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
