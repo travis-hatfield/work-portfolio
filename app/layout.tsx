@@ -20,9 +20,29 @@ const fraunces = Fraunces({
   axes: ["opsz", "SOFT", "WONK"],
 });
 
+const siteTitle = "Travis Hatfield — Work";
+const siteDescription =
+  "Professional portfolio: resume, AI-assisted projects, personal AI projects, and resources.";
+const siteUrl = "https://work.travishatfield.dev";
+
 export const metadata: Metadata = {
-  title: "Travis Hatfield — Work",
-  description: "Professional portfolio: resume, AI-assisted projects, personal AI projects, and resources.",
+  metadataBase: new URL(siteUrl),
+  title: siteTitle,
+  description: siteDescription,
+  openGraph: {
+    title: siteTitle,
+    description: siteDescription,
+    url: siteUrl,
+    siteName: siteTitle,
+    images: [{ url: "/headshot.jpg" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: siteTitle,
+    description: siteDescription,
+    images: ["/headshot.jpg"],
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
