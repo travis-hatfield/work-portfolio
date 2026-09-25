@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { X } from "lucide-react";
 
 interface ImageLightboxProps {
@@ -34,15 +33,12 @@ export default function ImageLightbox({ src, alt, caption, className }: ImageLig
           className="block w-full cursor-zoom-in overflow-hidden"
           aria-label={`Expand screenshot: ${alt}`}
         >
-          <div className="relative aspect-[16/9] w-full">
-            <Image
-              src={src}
-              alt={alt}
-              fill
-              sizes="(min-width: 1024px) 800px, 100vw"
-              className="object-cover object-top transition-transform duration-300 group-hover:scale-[1.015]"
-            />
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element -- intrinsic aspect ratio and crop framing vary per screenshot; next/image's fill mode caused inconsistent load/crop behavior here */}
+          <img
+            src={src}
+            alt={alt}
+            className="aspect-[16/9] w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.015]"
+          />
         </button>
       </div>
       {caption && <p className="mt-2 text-sm text-muted">{caption}</p>}
