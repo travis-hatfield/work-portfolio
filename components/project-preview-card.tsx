@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 type Screenshot = { url: string; caption?: string };
 
@@ -60,12 +61,15 @@ export default function ProjectPreviewCard({
           </div>
         ) : (
           shots.map((s, i) => (
-            <img
+            <Image
               key={shotUrl(s)}
               src={shotUrl(s)}
               alt={`${title} screenshot ${i + 1}`}
-              className="absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-500"
+              fill
+              sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
+              className="object-cover object-top transition-opacity duration-500"
               style={{ opacity: i === active ? 1 : 0 }}
+              priority={i === 0}
             />
           ))
         )}

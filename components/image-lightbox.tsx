@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { X } from "lucide-react";
 
 interface ImageLightboxProps {
@@ -33,11 +34,15 @@ export default function ImageLightbox({ src, alt, caption, className }: ImageLig
           className="block w-full cursor-zoom-in overflow-hidden"
           aria-label={`Expand screenshot: ${alt}`}
         >
-          <img
-            src={src}
-            alt={alt}
-            className="aspect-[16/9] w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.015]"
-          />
+          <div className="relative aspect-[16/9] w-full">
+            <Image
+              src={src}
+              alt={alt}
+              fill
+              sizes="(min-width: 1024px) 800px, 100vw"
+              className="object-cover object-top transition-transform duration-300 group-hover:scale-[1.015]"
+            />
+          </div>
         </button>
       </div>
       {caption && <p className="mt-2 text-sm text-muted">{caption}</p>}
@@ -67,6 +72,7 @@ export default function ImageLightbox({ src, alt, caption, className }: ImageLig
               <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
               <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
             </div>
+            {/* eslint-disable-next-line @next/next/no-img-element -- intrinsic size varies per screenshot; rendered on demand, not on initial page load */}
             <img src={src} alt={alt} className="h-auto w-full" />
           </div>
         </div>
