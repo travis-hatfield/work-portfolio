@@ -33,12 +33,6 @@ export default async function Nav() {
               {l.label}
             </Link>
           ))}
-          <Link
-            href="/admin"
-            className="rounded-sm border border-border px-3 py-1 text-xs text-muted transition-colors hover:border-accent-2 hover:text-foreground"
-          >
-            Admin Access
-          </Link>
         </nav>
       </div>
     </header>
