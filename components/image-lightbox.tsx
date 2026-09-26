@@ -8,9 +8,12 @@ interface ImageLightboxProps {
   alt: string;
   caption?: string;
   className?: string;
+  /** Show the screenshot at its own aspect ratio instead of cropping it into a 16:9 box.
+   * Use for hero screenshots, where wide dashboard-style captures otherwise lose content off both edges. */
+  preserveAspect?: boolean;
 }
 
-export default function ImageLightbox({ src, alt, caption, className }: ImageLightboxProps) {
+export default function ImageLightbox({ src, alt, caption, className, preserveAspect }: ImageLightboxProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -37,7 +40,11 @@ export default function ImageLightbox({ src, alt, caption, className }: ImageLig
           <img
             src={src}
             alt={alt}
-            className="aspect-[16/9] w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.015]"
+            className={
+              preserveAspect
+                ? "w-full transition-transform duration-300 group-hover:scale-[1.015]"
+                : "aspect-[16/9] w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.015]"
+            }
           />
         </button>
       </div>
