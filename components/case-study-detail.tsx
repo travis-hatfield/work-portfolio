@@ -78,6 +78,7 @@ export default function CaseStudyDetail({
             alt={hero.caption || `${item.title} screenshot`}
             caption={hero.caption}
             className="w-full"
+            preserveAspect
           />
         </figure>
       )}
