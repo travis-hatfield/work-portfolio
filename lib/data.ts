@@ -6,7 +6,7 @@ export const profile = {
   email: "hello@travishatfield.dev",
   secondaryEmail: "thatfield0720@gmail.com",
   resumeHeadline: "Senior HR Business Partner | SHRM-SCP",
-  location: "San Francisco, CA | Relocating to New York City, Oct 2026 | Open to remote",
+  location: "San Francisco, CA | Relocating to New York City, Oct 2027 | Open to remote",
   resumePdf: "/resume/pdf",
   photo: "/headshot.jpg", // add this file to /public once uploaded; falls back to initials if missing
 };
