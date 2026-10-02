@@ -5,7 +5,9 @@ export const profile = {
     "I lead People Operations and HR Business Partnership for high-growth, global teams — org design, workforce planning, employee relations, and compliant execution through RIFs, migrations, and expansion into new countries. I also build the internal AI tools my team runs on: an HR knowledge assistant, automated reporting, and onboarding/offboarding workflows built with Claude.",
   email: "hello@travishatfield.dev",
   secondaryEmail: "thatfield0720@gmail.com",
-  resumePdf: "/resume-travis-hatfield.pdf",
+  resumeHeadline: "Senior HR Business Partner | SHRM-SCP",
+  location: "San Francisco, CA | Relocating to New York City, Oct 2026 | Open to remote",
+  resumePdf: "/resume/pdf",
   photo: "/headshot.jpg", // add this file to /public once uploaded; falls back to initials if missing
 };
 
