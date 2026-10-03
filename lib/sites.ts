@@ -8,7 +8,7 @@ export const SITE_CONFIG: Record<
     label: "Professional",
     domains: ["work.travishatfield.dev"],
     title: "Travis Hatfield — Work",
-    description: "Resume, AI-assisted projects, and resources.",
+    description: "Resume, AI-assisted projects, and personal AI projects.",
   },
   personal: {
     label: "Personal",

@@ -20,11 +20,6 @@ const professionalLinks = [
     label: "Personal AI Projects",
     desc: "Independent builds and experiments, run outside of work.",
   },
-  {
-    href: "/resources",
-    label: "Resources",
-    desc: "Templates and files worth sharing.",
-  },
 ];
 
 export default async function Home() {

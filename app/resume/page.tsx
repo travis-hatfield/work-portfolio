@@ -8,7 +8,9 @@ export const metadata = { title: "Resume — Travis Hatfield" };
 
 function initials(name: string) {
   return name
-    .split(" ")
+    .replace(/\(.*?\)/g, "")
+    .split(/\s+/)
+    .filter((p) => /^[A-Za-z]/.test(p))
     .map((p) => p[0])
     .join("")
     .slice(0, 2)
@@ -129,15 +131,19 @@ export default async function ResumePage() {
                     </p>
                     <p className="mt-1.5 text-sm text-foreground/80">{role.summary}</p>
                   </div>
-                  <span className="mt-1 shrink-0 text-muted transition-transform group-open:rotate-45 text-xl leading-none">
-                    +
-                  </span>
+                  {role.details.length > 0 && (
+                    <span className="mt-1 shrink-0 text-muted transition-transform group-open:rotate-45 text-xl leading-none">
+                      +
+                    </span>
+                  )}
                 </summary>
-                <ul className="mt-3 list-disc space-y-1.5 rounded-xl bg-card/50 pl-5 text-sm text-foreground/90 marker:text-accent">
-                  {role.details.map((d, i) => (
-                    <li key={i}>{d}</li>
-                  ))}
-                </ul>
+                {role.details.length > 0 && (
+                  <ul className="mt-3 list-disc space-y-1.5 rounded-xl bg-card/50 pl-5 text-sm text-foreground/90 marker:text-accent">
+                    {role.details.map((d, i) => (
+                      <li key={i}>{d}</li>
+                    ))}
+                  </ul>
+                )}
               </details>
             ))}
           </div>
