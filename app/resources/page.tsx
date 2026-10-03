@@ -1,4 +1,4 @@
-import { resources as staticResources } from "@/lib/data";
+import { notFound } from "next/navigation";
 import { sql, ensureSchema, type ResourceRow } from "@/lib/db";
 import PageHero from "@/components/page-hero";
 
@@ -20,17 +20,17 @@ export default async function ResourcesPage() {
     SELECT * FROM resources ORDER BY category ASC, sort_order ASC, id ASC
   `) as unknown as ResourceRow[];
 
-  const resources: ResourceLike[] =
-    dbResources.length > 0
-      ? dbResources.map((r) => ({
-          title: r.title,
-          description: r.description,
-          fileType: r.file_type,
-          size: r.size,
-          href: r.href,
-          category: r.category,
-        }))
-      : staticResources;
+  // Hidden until real resources are added via /admin/resources (no placeholder fallback).
+  if (dbResources.length === 0) notFound();
+
+  const resources: ResourceLike[] = dbResources.map((r) => ({
+    title: r.title,
+    description: r.description,
+    fileType: r.file_type,
+    size: r.size,
+    href: r.href,
+    category: r.category,
+  }));
 
   const byCategory = resources.reduce<Record<string, ResourceLike[]>>((acc, r) => {
     (acc[r.category] ??= []).push(r);

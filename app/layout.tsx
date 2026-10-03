@@ -22,7 +22,7 @@ const fraunces = Fraunces({
 
 const siteTitle = "Travis Hatfield — Work";
 const siteDescription =
-  "Professional portfolio: resume, AI-assisted projects, personal AI projects, and resources.";
+  "Professional portfolio: resume, AI-assisted projects, and personal AI projects.";
 const siteUrl = "https://work.travishatfield.dev";
 
 export const metadata: Metadata = {

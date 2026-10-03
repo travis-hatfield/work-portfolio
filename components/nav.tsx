@@ -7,7 +7,6 @@ const professionalLinks = [
   { href: "/resume", label: "Resume" },
   { href: "/ai-assisted-projects", label: "AI-Assisted Projects" },
   { href: "/personal-ai-projects", label: "Personal AI Projects" },
-  { href: "/resources", label: "Resources" },
 ];
 
 const personalLinks = [
